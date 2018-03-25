@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: spy
+# key: spy
+# binding: direct-keybinding
+# --
+#+begin_src python :results output
+$0
+#+end_src

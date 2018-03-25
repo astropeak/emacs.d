@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: scs
+# key: scs
+# binding: direct-keybinding
+# --
+#+begin_src css
+$0
+#+end_src

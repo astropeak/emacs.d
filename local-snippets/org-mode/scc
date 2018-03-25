@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: scc
+# key: scc
+# binding: direct-keybinding
+# --
+#+begin_src C :includes <stdio.h>
+$0
+#+end_src

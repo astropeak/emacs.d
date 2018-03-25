@@ -1,0 +1,4 @@
+# name: (current time)
+# key: t
+# --
+`(format-time-string "%y%m%d")` 

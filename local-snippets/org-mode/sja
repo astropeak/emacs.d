@@ -1,0 +1,12 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: sja
+# key: sja
+# binding: direct-keybinding
+# --
+#+begin_src java :classname Test
+class Test {
+    public static void main(String[] args) {
+        $0
+    }
+}
+#+end_src

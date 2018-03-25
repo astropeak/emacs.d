@@ -1,0 +1,16 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: sht
+# key: sht
+# binding: direct-keybinding
+# --
+#+begin_src html :tangle $1.html
+<!DOCTYPE html>
+<head>
+  <title>$1</title>
+  <style>
+  </style>
+</head>
+<body>
+  $0
+</body
+#+end_src

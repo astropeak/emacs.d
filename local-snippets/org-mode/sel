@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: sel
+# key: sel
+# binding: direct-keybinding
+# --
+#+NAME: no-name
+#+begin_src elisp
+$0
+#+end_src
