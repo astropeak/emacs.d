@@ -75,6 +75,7 @@
         (magit-commit-mode . normal)
         (magit-diff-mode . normal)
         (js2-error-buffer-mode . emacs)
+        (eww-mode . emacs)
         )
       do (evil-set-initial-state mode state))
 
