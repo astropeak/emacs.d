@@ -13,3 +13,6 @@
  '(region ((t (:background "#eeeeee" :foreground "white"))))
  '(sh-heredoc ((t (:foreground "black" :weight bold))))
  '(window-numbering-face ((t (:foreground "DeepPink" :underline "DeepPink" :weight bold))) t))
+
+
+(provide 'init-eink)

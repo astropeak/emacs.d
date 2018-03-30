@@ -153,6 +153,7 @@
 ;; misc has some crucial tools I need immediately
 (require 'init-misc)
 (require 'init-wubi)
+(require 'init-eink)
 
 ;; color theme
 ;; (require 'color-theme)
