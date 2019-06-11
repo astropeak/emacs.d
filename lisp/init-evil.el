@@ -20,7 +20,7 @@
 ;; }}
 
 ;; Move back the cursor one position when exiting insert mode
-(setq evil-move-cursor-back t)
+(setq evil-move-cursor-back nil)
 
 (defun toggle-org-or-message-mode ()
   (interactive)
@@ -269,6 +269,8 @@ to replace the symbol under cursor"
   "qq" '(lambda () (interactive) (w3m-search "q" (thing-at-point 'symbol)))
   "gs" 'magit-status
   "gg" 'magit-status
+  "gc" 'magit-commit
+  "gd" '(lambda () (interactive) (magit-diff-working-tree "HEAD"))
   ;; "gss" 'git-gutter:set-start-revision
   ;; "gsh" '(lambda () (interactive) (git-gutter:set-start-revision "HEAD^")
   ;;          (message "git-gutter:set-start-revision HEAD^"))
@@ -431,6 +433,9 @@ to replace the symbol under cursor"
 
 ;; }}
 
+
+(evil-leader/set-key "hk" 'describe-key)
+
 ;; add ] as a leader key when in insert mode
 (setq evil-leader/non-normal-key "]")
 (when evil-leader/non-normal-key
@@ -449,7 +454,9 @@ to replace the symbol under cursor"
     (define-key evil-visual-state-map key2 nil)))
 
 ;; above lines not work. So using this way.
-(define-key evil-insert-state-map (kbd "]]") 'toggle-input-method)
+;; (define-key evil-insert-state-map (kbd "]]") 'toggle-input-method)
+(define-key evil-insert-state-map (kbd "]]") 'aspk-show-hide-ansi-term)
+;; (define-key evil-insert-state-map (kbd "]]") 'pns-expand-template-by-name)
 
     ;; (define-key evil-emacs-state-map
     ;;   (read-kbd-macro (concat evil-leader/non-normal-key
@@ -476,5 +483,12 @@ to replace the symbol under cursor"
 (require 'evil-nerd-commenter)
 (evilnc-default-hotkeys)
 ;; }}
+
+
+;; Save buffer when enter normal state. Typically when switch to normal state form insert state.
+(add-hook 'evil-normal-state-entry-hook
+          (lambda ()
+            (when (buffer-file-name)
+                  (save-buffer))))
 
 (provide 'init-evil)

@@ -1253,6 +1253,47 @@ The full path into relative path insert it as a local file link in org-mode"
   (save-buffer)
   (shell-command (format "gcc %s && ./a.out" (buffer-file-name))))
 
+(defun config/larger-font-size ()
+  (interactive)
+  (increment-default-font-height 30)
+  )
+
+(defun aspk-remove-empty-blank-lines ()
+  "Remove all blank characters in an whitespace line"
+     (interactive)
+     (save-excursion
+       (goto-char (point-min))
+       (let ((flag t))
+       (while flag
+         (setq flag (re-search-forward "^[ \t]+$" (point-max) t))
+         (replace-match "")
+         ))))
+
+(defun aspk-show-ansi-term ()
+  (interactive)
+  (window-configuration-to-register ?A)
+  (if (get-buffer "*ansi-term*")
+      (switch-to-buffer "*ansi-term*")
+    (ansi-term "/bin/zsh")
+    (company-mode -1)
+    (yas-minor-mode -1)
+    (evil-escape-mode -1)
+    (undo-tree-mode -1)
+    )
+
+  (delete-other-windows))
+
+(defun aspk-hide-ansi-term ()
+  (interactive)
+  (jump-to-register ?A))
+
+(defun aspk-show-hide-ansi-term()
+  (interactive)
+  (if (equal (buffer-name) "*ansi-term*")
+      (aspk-hide-ansi-term)
+    (aspk-show-ansi-term)))
+
+
 (require 'eoh)
 (require 'pcs)
 (require 'helm-c-yasnippet)

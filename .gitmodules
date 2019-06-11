@@ -4,3 +4,9 @@
 [submodule "site-lisp/org2blog"]
 	path = site-lisp/org2blog
 	url = https://github.com/astropeak/org2blog
+[submodule "site-lisp/org-page"]
+	path = site-lisp/org-page
+	url = https://github.com/astropeak/org-page
+[submodule "site-lisp/mustache.el"]
+	path = site-lisp/mustache.el
+	url = https://github.com/Wilfred/mustache.el

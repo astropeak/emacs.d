@@ -124,7 +124,7 @@
 
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline (concat org-directory "/todo.org") "Tasks")
-         "* TODO %?\n  %i\n  %a")
+         "* TODO %?\n  %U\n  %i\n  %a")
         ("a" "Appt" entry (file+headline (concat org-directory "/todo.org") "Appt")
          "* %^{Appt}\n  %^T%? \n %a")
         ("h" "Howto" entry (file+headline "" "Howto")
@@ -134,7 +134,7 @@
         ("l" "English learning" entry (file+headline "" "English learning")
          "* %^{Title}\n  %?")
         ("w" "Web development" entry (file+headline (concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %U\n  %?")
-        ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %U\n\n  %?")
+        ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %U\n  %i\n\n  %?")
         ("p" "Perl" entry (file+headline (concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %U\n  %?")
         ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
          "* %^{Title}\n  %U\n  %? \n\n  %a\n")))

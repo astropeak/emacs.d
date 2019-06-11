@@ -3,7 +3,6 @@
 # key: sel
 # binding: direct-keybinding
 # --
-#+NAME: no-name
-#+begin_src elisp
+#+begin_src emacs-lisp
 $0
 #+end_src

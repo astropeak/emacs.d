@@ -70,20 +70,20 @@ ARCHIVE is the string name of the package archive.")
 
 ;; We include the org repository for completeness, but don't use it.
 ;; Lock org-mode temporarily:
-;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 
 
 ;; well, melpa does not bother supporting emacs23 any more, but cl-lib is still required
 ;; TODO: in half a year, I will remove gnu elpa because emacs 24.3 is the minimum version
 (setq package-archives '(
-                         ("melpa-stable" . "http://stable.melpa.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
                          ))
 
 ;; Un-comment below line if you download zip file from https://github.com/redguardtoo/myelpa/archive/master.zip and extract its content into ~/myelpa/
 ;;(setq package-archives '(("myelpa" . "~/tmp/myelpa-1.2")))
 ;; (setq package-archives '(("myelpa" . (format "%s/../myelpa" emacs-init-dir))))
-(setq package-archives (list (cons "myelpa" (format "%s/../myelpa" emacs-init-dir))))
+;; (setq package-archives (list (cons "myelpa" (format "%s/../myelpa" emacs-init-dir))))
 
 (if (not *emacs24*) (add-to-list 'package-archives (cons "localelpa" (format "%s/localelpa" emacs-init-dir))))
 
@@ -147,6 +147,7 @@ ARCHIVE is the string name of the package archive.")
     fancy-narrow
     company-c-headers
     company-anaconda
+    org-page
     anaconda-mode)
   "Don't install any Melpa packages except these packages")
 

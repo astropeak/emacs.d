@@ -26,4 +26,9 @@
 (require 'aspk-outline)
 (add-hook 'python-mode-hook 'aspk/outline-python-mode-hook)
 
+;; # Disable automatic indent when yas snippet expands
+;; # Another variable is: yas-indent-line. If this is nil, then there will be no indent
+;; (delete 'yas-expand python-indent-trigger-commands)
+;; (delete 'yas/expand python-indent-trigger-commands)
+
 (provide 'init-python-mode)
