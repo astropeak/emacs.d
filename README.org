@@ -1,3 +1,13 @@
+* How to use this package
+  Copy the .emacs file to your home dir.
+  Note: on windows, the home dir is 'C:/Users/your-name/AppData/Roaming'
+  Then start emacs, and everything should work.
+
+* change log
+  user local elpa. This is the simplest way to use the config.
+
+  
+* --------------------------- old doc ------------------------------
 * Help me, Help you
 [[https://github.com/redguardtoo/emacs.d/issues/169][You can make this setup better]].
 * Checklist

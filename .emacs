@@ -6,7 +6,13 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(load-file "~/Dropbox/project/emacs.d/init.el")
+;; On windows, the default HOME dir is C:/Users/your-name/AppData/Roaming,
+;; so we may need to adjust the HOME dir
+(when  (eq system-type 'windows-nt)
+  (setenv "HOME" (format "C:/Users/%s" (getenv "USERNAME"))))
+
+(load-file "~/OneDrive/Dropbox/project/emacs.d/init.el")
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -83,7 +83,7 @@ ARCHIVE is the string name of the package archive.")
 ;; Un-comment below line if you download zip file from https://github.com/redguardtoo/myelpa/archive/master.zip and extract its content into ~/myelpa/
 ;;(setq package-archives '(("myelpa" . "~/tmp/myelpa-1.2")))
 ;; (setq package-archives '(("myelpa" . (format "%s/../myelpa" emacs-init-dir))))
-;; (setq package-archives (list (cons "myelpa" (format "%s/../myelpa" emacs-init-dir))))
+(setq package-archives (list (cons "myelpa" (format "%s/../myelpa" emacs-init-dir))))
 
 (if (not *emacs24*) (add-to-list 'package-archives (cons "localelpa" (format "%s/localelpa" emacs-init-dir))))
 
