@@ -3,6 +3,11 @@
   Note: on windows, the home dir is 'C:/Users/your-name/AppData/Roaming'
   Then start emacs, and everything should work.
 
+  Precondition:
+  1. aspk-code-base should be in the same directory as emacs.d
+     Some packages: such as the aspk-code-base/elisp/aspk-outline.el is required by emacs.d
+  2. myelpa should be in the same directory as emacs.d
+
 * change log
   user local elpa. This is the simplest way to use the config.
 

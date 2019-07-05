@@ -5,9 +5,9 @@
 (add-to-list 'load-path (expand-file-name (format "%slisp" emacs-init-dir)))
 
 ;; include aspk-package.
-(setq aspk-package-dir (concat emacs-init-dir
-                               "../aspk-code-base/elisp"))
-(add-to-list 'load-path (expand-file-name aspk-package-dir))
+(setq aspk-package-dir (expand-file-name (concat emacs-init-dir "../aspk-code-base/elisp")))
+(unless (file-exists-p aspk-package-dir) (signal 'error-symbol "Directory not exist: aspk-code-base. It should be put in the same directory as emacs.d"))
+(add-to-list 'load-path aspk-package-dir)
 
 ;;----------------------------------------------------------------------------
 ;; Which functionality to enable (use t or nil for true and false)
