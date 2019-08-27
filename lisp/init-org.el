@@ -118,7 +118,7 @@
 
 ;; org capture
 (require 'org-capture)
-(setq org-directory "~/Dropbox/org")
+(setq org-directory "~/OneDrive/Dropbox/org")
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (define-key global-map "\C-cc" 'org-capture)
 
