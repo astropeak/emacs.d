@@ -139,6 +139,7 @@
         ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
          "* %^{Title}\n  %U\n  %? \n\n  %a\n")))
 
+
 (add-to-list 'org-capture-mode-hook
              (lambda ()
                (evil-insert-state)))
@@ -274,5 +275,8 @@
 ;; THis problem happens on mac, emacs 25.
 (when *emacs25*
   (require 'remove-url-http-error))
+
+(add-to-list 'org-drawers "TODO")
+(add-to-list 'org-drawers "sidenote")
 
 (provide 'init-org)

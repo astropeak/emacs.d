@@ -219,3 +219,9 @@
 ;; added by astropeak
 (setq default-directory "~/")
 (load-file (format "%s/my-lisp.el" emacs-init-dir))
+;; TODO: move the above two line into init-aspk
+(require 'init-aspk)
+
+;; disable menu bar mode, but either commands don't work
+;; (call-interactively 'menu-bar-mode)
+(menu-bar-mode -1)
