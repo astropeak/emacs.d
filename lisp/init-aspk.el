@@ -50,23 +50,25 @@
 
 
 (defun aspk-get-current-buffer-file-name ()
-  (replace-regexp-in-string (getenv "HOME") "~" buffer-file-name))
+  (replace-regexp-in-string (getenv "HOME") "~" (or buffer-file-name (buffer-name))))
 
 ;; (defun pns-create-a-snippet ()
 (defun aspk-code-reading-create-a-snippet ()
   (let ((lang (pns-get-current-mode))
         (region-str (if mark-active (buffer-substring-no-properties (region-beginning) (region-end)) "")))
-    (format "* %s: %%^{Title}\n  %%U\n\n  %%?\n\n  #+file %s:%s\n  #+begin_src %s\n%s\n  #+end_src\n\n"
-            (file-name-nondirectory buffer-file-name)
-            (aspk-get-current-buffer-file-name)
-            (line-number-at-pos (region-beginning))
-            lang
-            (if (equal region-str "")
-                "  "
-              ;; delete empty lines in beginning and end of region-str
-              ;; TODO: below line is buggy, so commente ti for now
-              ;; (setq region-str (replace-regexp-in-string "^[ \t\n]*\\(.*\\)[ \t]*$" "\\1" region-str))
-              (pns-indent-src-code-string (s-trim region-str) lang 2)))))
+    (if (equal region-str "")
+        "* %^{Title}\n  %T\n  %?\n\n"
+      (format "* %s: %%^{Title}\n  %%T\n\n  %%?\n\n  #+file %s:%s\n  #+begin_src %s\n%s\n  #+end_src\n\n"
+              (file-name-nondirectory (or buffer-file-name (buffer-name)))
+              (aspk-get-current-buffer-file-name)
+              (line-number-at-pos (region-beginning))
+              lang
+              (if (equal region-str "")
+                  "  "
+                ;; delete empty lines in beginning and end of region-str
+                ;; TODO: below line is buggy, so commente ti for now
+                ;; (setq region-str (replace-regexp-in-string "^[ \t\n]*\\(.*\\)[ \t]*$" "\\1" region-str))
+                (pns-indent-src-code-string (s-trim region-str) lang 2))))))
 
 
 
@@ -75,7 +77,7 @@
   (save-excursion
     (goto-char (point-min))
     (setq aspk-tmp 0)
-    (while (re-search-forward " (DEMO VERSION!)" (point-max) t)
+    (while (re-search-forward "(DEMO VERSION!) " (point-max) t)
       ;; here (match-string 1) is the matched text by first (), (match-string 0) is th whole matched data.
       ;; add processing codes here
       ;; you can replace the matched text with another text

@@ -124,21 +124,24 @@
 
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline (concat org-directory "/todo.org") "Tasks")
-         "* TODO %?\n  %U\n  %i\n  %a")
+         "* TODO %?\n  %T\n  %i\n  %a")
         ("a" "Appt" entry (file+headline (concat org-directory "/todo.org") "Appt")
          "* %^{Appt}\n  %^T%? \n %a")
         ("h" "Howto" entry (file+headline "" "Howto")
-         "* %^{Title}\n  %U\n\n  %? \n  ======\n%i\n  %a \n")
+         "* %^{Title}\n  %T\n\n  %? \n  ======\n%i\n  %a \n")
         ("e" "Experience & Tips" entry (file+headline "" "Experience & Tips")
-         "* %^{Title}\n  %U\n\n  %? \n  ======\n  %i\n  %a \n")
+         "* %^{Title}\n  %T\n\n  %? \n  ======\n  %i\n  %a \n")
         ("l" "English learning" entry (file+headline "" "English learning")
          "* %^{Title}\n  %?")
-        ("w" "Web development" entry (file+headline (concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %U\n  %?")
-        ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %U\n  %i\n\n  %?")
-        ("p" "Perl" entry (file+headline (concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %U\n  %?")
+        ("w" "Web development" entry (file+headline (concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %T\n  %?")
+        ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %T\n  %i\n\n  %?")
+        ("p" "Perl" entry (file+headline (concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %T\n  %?")
         ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
-         "* %^{Title}\n  %U\n  %? \n\n  %a\n")))
 
+         (function aspk-code-reading-create-a-snippet)
+         ;; "* %^{Title}\n  %T\n  %? \n\n  %a\n"
+         :empty-lines-before 1
+         )))
 
 (add-to-list 'org-capture-mode-hook
              (lambda ()
@@ -170,7 +173,7 @@
 (setq org-enforce-todo-dependencies t)
 
 (setq org-todo-keywords
-      '((sequence "TODO(t@/!)" "STARTED(s@/!)" "DELAYED(f@/!)" "CHECK(v@/!)" "|" "DONE(d@/!)")
+      '((sequence "TODO(t@/!)" "STARTED(s@/!)" "DEFERED(f@/!)" "CHECK(v@/!)" "|" "DONE(d@/!)")
         (sequence "WAITING(w@/!)" "SOMEDAY(S@/!)" "PROJECT(P@/!)" "|" "CANCELLED(c@/!)")))
 
 ;; org mobile
@@ -188,7 +191,10 @@
 (org-defkey org-agenda-mode-map "l" 'org-agenda-do-date-later)
 (org-defkey org-agenda-mode-map "h" 'org-agenda-do-date-earlier)
 
-(setq org-agenda-files (list (concat org-directory "/todo.org")))
+(setq org-agenda-files (list
+                        (concat org-directory "/todo.org")
+                        (concat org-directory "/journal.org")
+                        ))
 
 ;; always use sticky agenda
 (org-toggle-sticky-agenda 1)

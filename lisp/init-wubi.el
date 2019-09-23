@@ -7,5 +7,13 @@
 (wubi-load-local-phrases)
 
 (setq default-input-method "chinese-wubi")
+
+
+(when (featurep 'evil-leader)
+  (evil-leader/set-key "i" 'toggle-input-method))
+
+;; # add popup list and temperary english support. elisp is good that you can modify existing functions by advice. Quite nice feature.
+(require 'aspk-app-wubi)
+
 (provide 'init-wubi)
 
