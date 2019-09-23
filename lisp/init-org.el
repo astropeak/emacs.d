@@ -172,8 +172,12 @@
 (setq org-agenda-dim-blocked-tasks 'invisible)
 (setq org-enforce-todo-dependencies t)
 
+;; (setq org-todo-keywords
+;;       '((sequence "TODO(t@/!)" "STARTED(s@/!)" "DEFERED(f@/!)" "CHECK(v@/!)" "|" "DONE(d@/!)")
+;;         (sequence "WAITING(w@/!)" "SOMEDAY(S@/!)" "PROJECT(P@/!)" "|" "CANCELLED(c@/!)")))
+
 (setq org-todo-keywords
-      '((sequence "TODO(t@/!)" "STARTED(s@/!)" "DEFERED(f@/!)" "CHECK(v@/!)" "|" "DONE(d@/!)")
+      '((sequence "TODO(t)" "STARTED(s)" "DEFERED(f@/!)" "CHECK(v" "|" "DONE(d@/!)")
         (sequence "WAITING(w@/!)" "SOMEDAY(S@/!)" "PROJECT(P@/!)" "|" "CANCELLED(c@/!)")))
 
 ;; org mobile
