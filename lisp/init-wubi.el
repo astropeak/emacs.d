@@ -9,8 +9,12 @@
 (setq default-input-method "chinese-wubi")
 
 
+;; key bindding
+(define-key global-map "\C-c]" 'toggle-input-method)
 (when (featurep 'evil-leader)
-  (evil-leader/set-key "i" 'toggle-input-method))
+  (evil-leader/set-key "]" 'toggle-input-method))
+
+(wubi-toggle-quanjiao-banjiao -1)
 
 ;; # add popup list and temperary english support. elisp is good that you can modify existing functions by advice. Quite nice feature.
 (require 'aspk-app-wubi)

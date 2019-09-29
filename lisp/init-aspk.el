@@ -10,15 +10,26 @@
   )
 
 
+(defun aspk-create-new-project ()
+  (let ((project helm-input))
+    (message "project: %s" project)
+    (aspk-code-reading-add-to-org-templates project)
+    )
+  )
+
 (defun aspk-code-reading ()
   (interactive)
-  (helm-other-buffer `((name . "project")
-                       (candidates . aspk-code-reading-get-projects)
-                       (action . (lambda (cand)
-                                   (aspk-code-reading-add-to-org-templates cand)
-                                   )))
-                     "project")
-  )
+  ;; (let ((helm-quit-if-no-candidate 'aspk-create-new-project))
+  (let ((aspk-called nil))
+    ;; (setq helm-quit-if-no-candidate 'aspk-create-new-project)
+    (helm-other-buffer `((name . "project")
+                         (candidates . aspk-code-reading-get-projects)
+                         (action . (lambda (cand)
+                                     (aspk-code-reading-add-to-org-templates cand)
+                                     (setq aspk-called t)
+                                     )))
+                       "project")
+    (unless aspk-called (aspk-create-new-project))))
 
 
 
