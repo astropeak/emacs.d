@@ -195,11 +195,18 @@
 (org-defkey org-agenda-mode-map "l" 'org-agenda-do-date-later)
 (org-defkey org-agenda-mode-map "h" 'org-agenda-do-date-earlier)
 
-(setq org-agenda-files (list
-                        (concat org-directory "/todo.org")
-                        (concat org-directory "/journal.org")
-                        (concat org-directory "/notes.org")
-                        ))
+;; (setq org-agenda-files (list
+;;                         (concat org-directory "/todo.org")
+;;                         (concat org-directory "/journal.org")
+;;                         (concat org-directory "/notes.org")
+;;                         ))
+
+(setq aspk-tmp-all-org-files
+      (cl-loop for f in (f-files org-directory nil t)
+               if (or (s-ends-with-p ".org" f)
+                      (s-ends-with-p ".org_archive" f))
+               collect f))
+(setq org-agenda-files aspk-tmp-all-org-files)
 
 ;; always use sticky agenda
 (org-toggle-sticky-agenda 1)
