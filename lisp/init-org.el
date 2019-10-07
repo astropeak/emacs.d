@@ -1,3 +1,4 @@
+(require 'f)
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 
@@ -296,5 +297,14 @@
 
 (add-to-list 'org-drawers "TODO")
 (add-to-list 'org-drawers "sidenote")
+
+(defun aspk-org-time-stamp ()
+  "Like org-time-stamp, but just insert the current timestamp without prompting"
+  (interactive)
+  (insert (format-time-string (org-time-stamp-format 'long nil) (org-current-effective-time)))
+  (org-return-indent)
+  )
+;;; overwrite the old org-time-stamp keybinding
+(define-key org-mode-map "\C-c." 'aspk-org-time-stamp)
 
 (provide 'init-org)
