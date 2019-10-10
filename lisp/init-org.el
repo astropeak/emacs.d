@@ -160,17 +160,18 @@
 ;; (custom-set-variables
 ;; '(org-agenda-files (quote ("~/todo.org")))
 ;; '(org-default-notes-file "~/notes.org")
-(setq org-agenda-span 7)
+(setq org-agenda-span 'day)
 (setq org-deadline-warning-days 14)
-(setq org-agenda-show-all-dates t)
+(setq org-agenda-show-all-dates nil)
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
-(setq org-agenda-start-on-weekday nil)
-(setq org-reverse-note-order t)
+(setq org-agenda-start-on-weekday 1)
+(setq org-reverse-note-order nil)
 (setq org-fast-tag-selection-single-key (quote expert))
 (setq org-log-note-state 'note)
 (setq org-todo-log-states 'note)
 (setq org-agenda-dim-blocked-tasks 'invisible)
+;; (setq org-agenda-dim-blocked-tasks 't)
 (setq org-enforce-todo-dependencies t)
 
 (setq org-todo-keywords
@@ -306,5 +307,20 @@
   )
 ;;; overwrite the old org-time-stamp keybinding
 (define-key org-mode-map "\C-c." 'aspk-org-time-stamp)
+
+
+;; define tag hierarchy
+(setq org-tag-persistent-alist
+      '(
+        (:startgrouptag) ("asr")
+        (:grouptags) ("kaldi")
+        (:endgrouptag)
+
+        (:startgrouptag) ("emacs")
+        (:grouptags) ("orgmode") ("wubi")
+        (:endgrouptag)
+
+        ))
+
 
 (provide 'init-org)
