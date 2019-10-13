@@ -1,3 +1,4 @@
+
 ;; -*- coding: utf-8 -*-
 (setq emacs-load-start-time (current-time))
 (setq emacs-init-dir (file-name-directory load-file-name))
@@ -8,6 +9,12 @@
 (setq aspk-package-dir (expand-file-name (concat emacs-init-dir "../aspk-code-base/elisp")))
 (unless (file-exists-p aspk-package-dir) (signal 'error-symbol "Directory not exist: aspk-code-base. It should be put in the same directory as emacs.d"))
 (add-to-list 'load-path aspk-package-dir)
+
+;; load another version of org-mode
+(setq org-src-dir (format "%s/site-lisp/org-mode" emacs-init-dir))
+(add-to-list 'load-path (format "%s/lisp" org-src-dir))
+(add-to-list 'load-path (format "%s/contrib/lisp" org-src-dir) t)
+
 
 ;;----------------------------------------------------------------------------
 ;; Which functionality to enable (use t or nil for true and false)

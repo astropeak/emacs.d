@@ -26,7 +26,7 @@
         (t (error "Please select a region to narrow to"))))
 
 ;; Various preferences
-(setq org-log-done t
+(setq org-log-done 'time
       org-completion-use-ido t
       org-edit-src-content-indentation 0
       org-edit-timestamp-down-means-later t
@@ -119,14 +119,14 @@
 
 ;; org capture
 (require 'org-capture)
-(setq org-directory "~/OneDrive/Dropbox/org")
+(setq org-directory (expand-file-name "~/OneDrive/Dropbox/org"))
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (define-key global-map "\C-cc" 'org-capture)
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline (concat org-directory "/todo.org") "Tasks")
+      `(("t" "Todo" entry (file+headline ,(concat org-directory "/todo.org") "Tasks")
          "* TODO %?\n  %T\n  %i\n  %a")
-        ("a" "Appt" entry (file+headline (concat org-directory "/todo.org") "Appt")
+        ("a" "Appt" entry (file+headline ,(concat org-directory "/todo.org") "Appt")
          "* %^{Appt}\n  %^T%? \n %a")
         ("h" "Howto" entry (file+headline "" "Howto")
          "* %^{Title}\n  %T\n\n  %? \n  ======\n%i\n  %a \n")
@@ -134,14 +134,15 @@
          "* %^{Title}\n  %T\n\n  %? \n  ======\n  %i\n  %a \n")
         ("l" "English learning" entry (file+headline "" "English learning")
          "* %^{Title}\n  %?")
-        ("w" "Web development" entry (file+headline (concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %T\n  %?")
+        ("w" "Web development" entry (file+headline ,(concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %T\n  %?")
         ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %T\n  %i\n\n  %?")
-        ("p" "Perl" entry (file+headline (concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %T\n  %?")
-        ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
+        ("p" "Perl" entry (file+headline ,(concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %T\n  %?")
+        ("j" "Journal" entry (file+olp+datetree ,(concat org-directory "/journal.org"))
 
          (function aspk-code-reading-create-a-snippet)
          ;; "* %^{Title}\n  %T\n  %? \n\n  %a\n"
          :empty-lines-before 1
+         :tree-type week
          )))
 
 (add-to-list 'org-capture-mode-hook
@@ -168,19 +169,19 @@
 (setq org-agenda-start-on-weekday 1)
 (setq org-reverse-note-order nil)
 (setq org-fast-tag-selection-single-key (quote expert))
-(setq org-log-note-state 'note)
-(setq org-todo-log-states 'note)
+(setq org-log-note-state 'time)
+(setq org-todo-log-states 'time)
 (setq org-agenda-dim-blocked-tasks 'invisible)
 ;; (setq org-agenda-dim-blocked-tasks 't)
 (setq org-enforce-todo-dependencies t)
 
-(setq org-todo-keywords
-      '((sequence "TODO(t@)" "STARTED(s@/!)" "DEFERED(f@/!)" "CHECK(v@/!)" "|" "DONE(d@/!)")
-        (sequence "WAITING(w@/!)" "SOMEDAY(S@/!)" "PROJECT(P@/!)" "|" "CANCELLED(c@/!)")))
-
 ;; (setq org-todo-keywords
-;;       '((sequence "TODO(t)" "STARTED(s)" "DEFERED(f@/!)" "CHECK(v" "|" "DONE(d@/!)")
+;;       '((sequence "TODO(t@)" "STARTED(s@/!)" "DEFERED(f@/!)" "CHECK(v@/!)" "|" "DONE(d@/!)")
 ;;         (sequence "WAITING(w@/!)" "SOMEDAY(S@/!)" "PROJECT(P@/!)" "|" "CANCELLED(c@/!)")))
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "STARTED(s)" "DEFERED(f)" "CHECK(v" "|" "DONE(d)")
+        (sequence "WAITING(w)" "SOMEDAY(S)" "PROJECT(P)" "|" "CANCELLED(c)")))
 
 ;; org mobile
 (setq org-mobile-directory "~/Box Sync/mobileOrg")
@@ -205,8 +206,10 @@
 
 (setq aspk-tmp-all-org-files
       (cl-loop for f in (f-files org-directory nil t)
-               if (or (s-ends-with-p ".org" f)
+               if (and (or (s-ends-with-p ".org" f)
                       (s-ends-with-p ".org_archive" f))
+                       ;; TODO: add starts not with .
+                       )
                collect f))
 (setq org-agenda-files aspk-tmp-all-org-files)
 
@@ -296,8 +299,8 @@
 (when *emacs25*
   (require 'remove-url-http-error))
 
-(add-to-list 'org-drawers "TODO")
-(add-to-list 'org-drawers "sidenote")
+;; (add-to-list 'org-drawers "TODO")
+;; (add-to-list 'org-drawers "sidenote")
 
 (defun aspk-org-time-stamp ()
   "Like org-time-stamp, but just insert the current timestamp without prompting"
@@ -312,13 +315,27 @@
 ;; define tag hierarchy
 (setq org-tag-persistent-alist
       '(
-        (:startgrouptag) ("asr")
-        (:grouptags) ("kaldi")
+        (:startgrouptag)
+        ("asr" . ?a)
+        (:grouptags)
+        ("kaldi" . ?k)
         (:endgrouptag)
 
-        (:startgrouptag) ("emacs")
-        (:grouptags) ("orgmode") ("wubi")
+        (:startgrouptag)
+        ("emacs" . ?e)
+        (:grouptags)
+        ("orgmode")
+        ("wubi")
         (:endgrouptag)
+
+        ("work" . ?w)
+        ("body" . ?b)
+        ("wow" . ?o)
+        ("career" . ?c)
+        ("home" . ?h)   ;; for things that can be done at home
+        ("parenting" . ?p)
+        ("family" . ?f)
+        ("investment" . ?i)
 
         ))
 
