@@ -11258,7 +11258,8 @@ If JUST-RETURN-STRING is non-nil, return a string, don't display a message."
     (setq res
 	  (org-format-outline-path
 	   path
-	   (1- (frame-width))
+	   ;; (1- (frame-width))
+          999
 	   (and file bfn (concat (file-name-nondirectory bfn) separator))
 	   separator))
     (if just-return-string
