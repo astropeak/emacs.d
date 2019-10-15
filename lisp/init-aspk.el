@@ -49,7 +49,7 @@
 (defun aspk-code-reading-org-capture-template (project)
   `(,aspk-code-reading-key ,project entry
                            (file+headline
-                            (concat aspk-code-reading-dir "/" ,project ".org")
+                            ,(concat aspk-code-reading-dir "/" project ".org")
                             "Captured")
                            ;; "* %^{Title}\n  %U\n  %i\n\n  %F\n\n%?"
                            (function aspk-code-reading-create-a-snippet)
