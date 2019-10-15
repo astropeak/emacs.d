@@ -5,11 +5,11 @@
 (require 'helm)
 (require 'helm-utils)
 
-(defvar eoh-base-dir (getenv "HOME") "The base dir for all files in `eoh-files'")
+(defvar eoh-base-dir (getenv "HOME") "The base dir for all files in `eoh-files', which store list of org files. By using this eoh-base-dir, cross platform org file path is possible")
 (defvar eoh-files nil "Type: list; element: string(file full path name). the files should be searched for headings. This is the input to generate-headlines.")
 (defvar eoh-headlines nil "Type: list; element: list(file-name, line-no, heading)")
 (defvar eoh-perl-executable "perl")
-(defvar eoh-home-dir (format "%s/%s" (getenv "HOME") "Dropbox/Apps/emacs-org-headlines") "the data dir for the eoh applicaton. All generated headlines will be saved in this dir")
+(defvar eoh-home-dir (format "%s/%s" (getenv "HOME") "OneDrive/Dropbox/Apps/emacs-org-headlines") "the data dir for the eoh applicaton. All generated headlines will be saved in this dir")
 (defvar eoh-headlines-dir (format "%s/headlines" eoh-home-dir) "the generated files by perl are all saved under this dir")
 (defvar eoh-perl-script-name (format "%s/%s" (file-name-directory load-file-name) "make_headline.pl") "the perl script that generate the headline files")
 (defvar eoh-files-file-name (format "%s/%s" eoh-home-dir "files") "The file is used to save the `eoh-files' variable")
@@ -224,8 +224,10 @@
 
 (defun eoh-clear-files ()
   "Clear all eoh files"
+  (interactive)
   (setq eoh-files nil)
   )
+
 (setq eoh-history-loaded-p nil)
 (defun eoh-load-files ()
   "load the file names to `eoh-files' from `eoh-files-file-name."
@@ -262,6 +264,7 @@
 ;;     #+NAME: no-name
 
 (defvar eoh-historys nil "The select history")
+;; (setq eoh-historys nil)
 (defvar eoh-history-file-name (format "%s/%s" eoh-home-dir "history") "The file is used to save the `eoh-historys' variable")
 
 ;; integrate
