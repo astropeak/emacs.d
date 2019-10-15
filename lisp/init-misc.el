@@ -1293,6 +1293,7 @@ The full path into relative path insert it as a local file link in org-mode"
       (aspk-hide-ansi-term)
     (aspk-show-ansi-term)))
 
+(set-face-background 'default "old lace")
 
 (require 'eoh)
 (require 'pcs)
