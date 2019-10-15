@@ -2,6 +2,12 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 
+
+;; C-return is bind to this originally
+;; (org-insert-heading-respect-content &optional INVISIBLE-OK)
+(define-key org-mode-map (kbd "<C-return>") 'org-meta-return)
+
+
 ;; {{ export org-mode in Chinese into PDF
 ;; @see http://freizl.github.io/posts/tech/2012-04-06-export-orgmode-file-in-Chinese.html
 ;; and you need install texlive-xetex on different platforms
@@ -174,6 +180,7 @@
 (setq org-agenda-dim-blocked-tasks 'invisible)
 ;; (setq org-agenda-dim-blocked-tasks 't)
 (setq org-enforce-todo-dependencies t)
+(setq org-agenda-include-diary nil)  ;; do not include diary
 
 ;; (setq org-todo-keywords
 ;;       '((sequence "TODO(t@)" "STARTED(s@/!)" "DEFERED(f@/!)" "CHECK(v@/!)" "|" "DONE(d@/!)")
