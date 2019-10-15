@@ -4,6 +4,7 @@
 
 (require 'wubi)
 (register-input-method "chinese-wubi" "Chinese-GB" 'quail-use-package "wubi" "wubi")
+(setq wubi-phrases-file (format "%s.wubi-phrases.el" emacs-init-dir))
 (wubi-load-local-phrases)
 
 (setq default-input-method "chinese-wubi")
@@ -15,6 +16,7 @@
   (evil-leader/set-key "]" 'toggle-input-method))
 
 (wubi-toggle-quanjiao-banjiao -1)
+
 
 ;; # add popup list and temperary english support. elisp is good that you can modify existing functions by advice. Quite nice feature.
 (require 'aspk-app-wubi)
