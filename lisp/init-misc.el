@@ -1153,21 +1153,23 @@ The full path into relative path insert it as a local file link in org-mode"
 ;; (aspk/delete-from-buffer-list "*Messages*")
 
 
+(setq aspk/buffer-norecord nil)
 (defun aspk/switch-to-buffer-after-advice (buffer-or-name &optional norecord force-same-window)
   (unless norecord
-    (let ((b (if (stringp buffer-or-name)
-                 buffer-or-name
-               (buffer-name buffer-or-name))))
-      (aspk/delete-from-buffer-list b)
-      (aspk/add-to-top-of-buffer-list b))))
+    (unless aspk/buffer-norecord
+      (let ((b (if (stringp buffer-or-name)
+                   buffer-or-name
+                 (buffer-name buffer-or-name))))
+        (aspk/delete-from-buffer-list b)
+        (aspk/add-to-top-of-buffer-list b)))))
 
-(defadvice switch-to-buffer (after record-buffer)
-  (unless norecord
-    (let ((b (if (stringp buffer-or-name)
-                 buffer-or-name
-               (buffer-name buffer-or-name))))
-      (aspk/delete-from-buffer-list b)
-      (aspk/add-to-top-of-buffer-list b))))
+;; (defadvice switch-to-buffer (after record-buffer)
+;;   (unless norecord
+;;     (let ((b (if (stringp buffer-or-name)
+;;                  buffer-or-name
+;;                (buffer-name buffer-or-name))))
+;;       (aspk/delete-from-buffer-list b)
+;;       (aspk/add-to-top-of-buffer-list b))))
 
 ;; TODO: window-normalize-buffer-to-switch-to, add advice to this function. which is called by both switch-to-buffer and pop-to-buffer
 (if (fboundp 'advice-add)
@@ -1184,7 +1186,9 @@ The full path into relative path insert it as a local file link in org-mode"
   (aspk/add-to-top-of-buffer-list (buffer-name))
 
   (setq aspk/buffer-index 1)
-  (switch-to-buffer (aspk/get-from-buffer-list aspk/buffer-index) t)
+  (progn (setq aspk/buffer-norecord t)
+         (switch-to-buffer (aspk/get-from-buffer-list aspk/buffer-index) t)
+         (setq aspk/buffer-norecord nil))
 
   (aspk/bind-temporary-keymap
    (list
@@ -1192,17 +1196,22 @@ The full path into relative path insert it as a local file link in org-mode"
           '(progn
              (when (< aspk/buffer-index (- (length aspk/buffer-list) 1))
                (incf aspk/buffer-index)
-               (switch-to-buffer (aspk/get-from-buffer-list aspk/buffer-index) t))))
+               (progn (setq aspk/buffer-norecord t)
+                      (switch-to-buffer (aspk/get-from-buffer-list aspk/buffer-index) t)
+                      (setq aspk/buffer-norecord nil))
+               )))
     (cons "v"
           '(progn
              (when (> aspk/buffer-index 0)
                (decf aspk/buffer-index)
-               (switch-to-buffer (aspk/get-from-buffer-list aspk/buffer-index) t))))
+               (progn (setq aspk/buffer-norecord t)
+                      (switch-to-buffer (aspk/get-from-buffer-list aspk/buffer-index) t)
+                      (setq aspk/buffer-norecord nil))
+               )))
     (cons "s" '(ido-switch-buffer)))
-   '(format "[%d/%d, %s] Type b to next buffer, v to previous buffer, s to any buffer. %S"
-            aspk/buffer-index (- (length aspk/buffer-list) 1) (aspk/get-from-buffer-list aspk/buffer-index)
+   '(format "[%d/%d] Type b to next buffer, v to previous buffer, s to any buffer. %S"
+            aspk/buffer-index (- (length aspk/buffer-list) 1)
             (list (nth 0 aspk/buffer-list) (nth 1 aspk/buffer-list) (nth 2 aspk/buffer-list)))))
-
 
 (defun aspk/move ()
   (interactive)
@@ -1263,14 +1272,14 @@ The full path into relative path insert it as a local file link in org-mode"
 
 (defun aspk-remove-empty-blank-lines ()
   "Remove all blank characters in an whitespace line"
-     (interactive)
-     (save-excursion
-       (goto-char (point-min))
-       (let ((flag t))
-       (while flag
-         (setq flag (re-search-forward "^[ \t]+$" (point-max) t))
-         (replace-match "")
-         ))))
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((flag t))
+      (while flag
+        (setq flag (re-search-forward "^[ \t]+$" (point-max) t))
+        (replace-match "")
+        ))))
 
 (defun aspk-show-ansi-term ()
   (interactive)
