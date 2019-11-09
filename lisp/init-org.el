@@ -6,7 +6,8 @@
 ;; C-return is bind to this originally
 ;; (org-insert-heading-respect-content &optional INVISIBLE-OK)
 (define-key org-mode-map (kbd "<C-return>") 'org-meta-return)
-
+(when (featurep 'evil-leader)
+  (evil-leader/set-key "e" 'org-meta-return))
 
 ;; {{ export org-mode in Chinese into PDF
 ;; @see http://freizl.github.io/posts/tech/2012-04-06-export-orgmode-file-in-Chinese.html
@@ -168,7 +169,7 @@
 ;; '(org-agenda-files (quote ("~/todo.org")))
 ;; '(org-default-notes-file "~/notes.org")
 (setq org-agenda-span 'day)
-(setq org-deadline-warning-days 14)
+(setq org-deadline-warning-days 7)
 (setq org-agenda-show-all-dates nil)
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
@@ -187,8 +188,8 @@
 ;;         (sequence "WAITING(w@/!)" "SOMEDAY(S@/!)" "PROJECT(P@/!)" "|" "CANCELLED(c@/!)")))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "STARTED(s)" "DEFERED(f)" "CHECK(v" "|" "DONE(d)")
-        (sequence "WAITING(w)" "SOMEDAY(S)" "PROJECT(P)" "|" "CANCELLED(c)")))
+      '((sequence "TODO(t)" "STARTED(s)" "DEFERED(f)" "CHECK(v" "|" "DONE(d@/!)")
+        (sequence "WAITING(w)" "SOMEDAY(S)" "PROJECT(P)" "|" "CANCELLED(c@/!)")))
 
 ;; org mobile
 (setq org-mobile-directory "~/Box Sync/mobileOrg")
@@ -215,10 +216,17 @@
       (cl-loop for f in (f-files org-directory nil t)
                if (and (or (s-ends-with-p ".org" f)
                       (s-ends-with-p ".org_archive" f))
-                       ;; TODO: add starts not with .
+                       ;; DONE: add starts not with .
+                       (not (s-starts-with-p "." f))
                        )
                collect f))
 (setq org-agenda-files aspk-tmp-all-org-files)
+;; (setq org-agenda-files (list (concat org-directory "/journal.org")))
+
+
+;; fix bug: tags are not displayed fully in agenda view due to the actual width of Chinese character is wider.
+;; (setq org-agenda-tags-column (- (min (- (window-text-width) 4) 100)))
+(setq org-agenda-tags-column (- (- (window-text-width) 4) ))
 
 ;; always use sticky agenda
 (org-toggle-sticky-agenda 1)
@@ -317,34 +325,46 @@
   )
 ;;; overwrite the old org-time-stamp keybinding
 (define-key org-mode-map "\C-c." 'aspk-org-time-stamp)
+(define-key org-mode-map (kbd "C-c C-.") 'aspk-org-time-stamp)
 
 
 ;; define tag hierarchy
-(setq org-tag-persistent-alist
-      '(
-        (:startgrouptag)
-        ("asr" . ?a)
-        (:grouptags)
-        ("kaldi" . ?k)
-        (:endgrouptag)
+;; (setq org-tag-persistent-alist
+;;       '(
+;;         (:startgrouptag)
+;;         ("asr" . ?a)
+;;         (:grouptags)
+;;         ("kaldi" . ?k)
+;;         (:endgrouptag)
 
-        (:startgrouptag)
-        ("emacs" . ?e)
-        (:grouptags)
-        ("orgmode")
-        ("wubi")
-        (:endgrouptag)
+;;         (:startgrouptag)
+;;         ("emacs" . ?e)
+;;         (:grouptags)
+;;         ("orgmode")
+;;         ("wubi")
+;;         (:endgrouptag)
 
-        ("work" . ?w)
-        ("body" . ?b)
-        ("wow" . ?o)
-        ("career" . ?c)
-        ("home" . ?h)   ;; for things that can be done at home
-        ("parenting" . ?p)
-        ("family" . ?f)
-        ("investment" . ?i)
+;;         ("work" . ?w)
+;;         ("body" . ?b)
+;;         ("wow" . ?o)
+;;         ("career" . ?c)
+;;         ("home" . ?h)   ;; for things that can be done at home
+;;         ("parenting" . ?p)
+;;         ("family" . ?f)
+;;         ("investment" . ?i)
 
-        ))
+;;         ))
+
+
+;; '("ALLTAGS" "BLOCKED" "CLOCKSUM" "CLOCKSUM_T" "CLOSED" "DEADLINE" "FILE"
+;; "ITEM" "PRIORITY" "SCHEDULED" "TAGS" "TIMESTAMP" "TIMESTAMP_IA" "TODO")
+(setq org-columns-default-format "%TIMESTAMP %75ITEM %ALLTAGS %TODO %PRIORITY")
+
+
+(org-defkey org-agenda-mode-map "S" 'org-agenda-schedule)
+
+(when (featurep 'evil-leader)
+  (evil-leader/set-key "a" 'org-agenda-list))
 
 
 (provide 'init-org)

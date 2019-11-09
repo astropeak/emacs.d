@@ -1169,10 +1169,12 @@ The full path into relative path insert it as a local file link in org-mode"
       (aspk/delete-from-buffer-list b)
       (aspk/add-to-top-of-buffer-list b))))
 
+;; TODO: window-normalize-buffer-to-switch-to, add advice to this function. which is called by both switch-to-buffer and pop-to-buffer
 (if (fboundp 'advice-add)
-    (advice-add 'switch-to-buffer :after #'aspk/switch-to-buffer-after-advice)
+    ;; (advice-add 'switch-to-buffer :after #'aspk/switch-to-buffer-after-advice)
+    (advice-add 'window-normalize-buffer-to-switch-to :after #'aspk/switch-to-buffer-after-advice)
   (ad-activate 'switch-to-buffer))
-
+;; (advice-remove 'switch-to-buffer #'aspk/switch-to-buffer-after-advice)
 (setq aspk/buffer-index 1)
 (defun aspk/switch-buffer ()
   (interactive)
@@ -1197,8 +1199,9 @@ The full path into relative path insert it as a local file link in org-mode"
                (decf aspk/buffer-index)
                (switch-to-buffer (aspk/get-from-buffer-list aspk/buffer-index) t))))
     (cons "s" '(ido-switch-buffer)))
-   '(format "[%d/%d] Type b to next buffer, v to previous buffer, s to any buffer"
-            (+ 1 aspk/buffer-index) (length aspk/buffer-list))))
+   '(format "[%d/%d, %s] Type b to next buffer, v to previous buffer, s to any buffer. %S"
+            aspk/buffer-index (- (length aspk/buffer-list) 1) (aspk/get-from-buffer-list aspk/buffer-index)
+            (list (nth 0 aspk/buffer-list) (nth 1 aspk/buffer-list) (nth 2 aspk/buffer-list)))))
 
 
 (defun aspk/move ()
@@ -1293,7 +1296,14 @@ The full path into relative path insert it as a local file link in org-mode"
       (aspk-hide-ansi-term)
     (aspk-show-ansi-term)))
 
-(set-face-background 'default "old lace")
+;; (set-face-background 'default "old lace")
+;; (set-face-background 'default "ffffff")
+
+;; save book automatically after storing one
+(add-to-list 'bmkp-after-set-hook 'bookmark-save)
+
+;; the removes the confirmation when save a book mark.
+(setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
 (require 'eoh)
 (require 'pcs)

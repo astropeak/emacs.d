@@ -266,7 +266,8 @@ to replace the symbol under cursor"
   "mq" '(lambda () (interactive) (man (concat "-k " (thing-at-point 'symbol))))
   "mgh" '(lambda () (interactive) (magit-show-commit "HEAD"))
   ;; "gg" '(lambda () (interactive) (w3m-search "g" (thing-at-point 'symbol)))
-  "qq" '(lambda () (interactive) (w3m-search "q" (thing-at-point 'symbol)))
+  ;; "qq" '(lambda () (interactive) (w3m-search "q" (thing-at-point 'symbol)))
+  "q" 'delete-other-windows
   "gs" 'magit-status
   "gg" 'magit-status
   "gc" 'magit-commit
