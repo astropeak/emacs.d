@@ -186,6 +186,23 @@ to replace the symbol under cursor"
 ;; {{ evil-leader config
 (setq evil-leader/leader "<SPC>")
 (require 'evil-leader)
+;; add ] as a leader key when in insert mode
+(setq evil-leader/non-normal-key "]")
+(when evil-leader/non-normal-key
+  (let ((key (read-kbd-macro evil-leader/non-normal-key))
+        (key2 (read-kbd-macro (concat evil-leader/non-normal-key
+                                      evil-leader/non-normal-key))))
+    (define-key evil-emacs-state-map key evil-leader/map)
+    (define-key evil-insert-state-map key evil-leader/map)
+    ;; not works
+    ;; (define-key evil-emacs-state-map key2 #'(lambda (N) (interactive "p") (self-insert-command N)))
+    ;; (define-key evil-insert-state-map key2 #'(lambda (N) (interactive "p") (self-insert-command N)))
+
+    (define-key evil-normal-state-map key evil-leader/map)
+    (define-key evil-visual-state-map key evil-leader/map)
+    (define-key evil-normal-state-map key2 nil)
+    (define-key evil-visual-state-map key2 nil)))
+
 ;; (setq evil-leader/in-all-states t)
 ;; (setq evil-leader/non-normal-prefix "]")
 
@@ -420,13 +437,13 @@ to replace the symbol under cursor"
   "wf" 'popup-which-function
 
   ;; "f" 'toggle-full-window
-  "f" 'helm-yas-complete
-  "v" 'pcs-create-snippet
+  ;; "f" 'helm-yas-complete
+  ;; "v" 'pcs-create-snippet
   "b" 'aspk/switch-buffer
   "i" 'indent-buffer
   "r" 'er/expand-region
   "x" 'helm-M-x
-  "a" 'ace-jump-mode
+  ;; "a" 'ace-jump-mode
   "z" 'aspk/move
   "w" 'eoh
   "j" 'peak-org-capture-journal
@@ -434,29 +451,42 @@ to replace the symbol under cursor"
 
 ;; }}
 
+;; this disables the error: variable binding depth excees max-specpdl-size
+(setq max-specpdl-size 9999)
 
+;; 有了两个前缀: ], ]], 我可以绑定50多个快捷键. 这完全足够了. 我要所所有常用的键都绑定上. 一个目标是不再按ctrl键.
+(defun aspk-toggle-evil-state ()
+  (interactive)
+  (if (or (equal evil-state 'insert) (equal evil-state 'emacs))
+      (evil-normal-state)
+    (evil-insert-state)))
+
+;; 这个通过使用keyboard macro实现. 先录制一个macro. 通过 F3 录制 F4. 然后给这个macro指定一个名字: c-x c-k n. 最后运行 insert-kbd-macro <RET> macroname <RET> 来将其实现插入到当前buffer.
+;; 但不知道重启emacs后,是否还能生效. => 仍然生效
+;; ref: https://www.gnu.org/software/emacs/manual/html_node/emacs/Save-Keyboard-Macro.html#Save-Keyboard-Macro
+(fset 'aspk-ctrl-c-ctrl-c
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("" 0 "%d")) arg)))
+
+(evil-leader/set-key "f" 'aspk-toggle-evil-state) ;; this key bind is great, why I don't find this way before
 (evil-leader/set-key "hk" 'describe-key)
 
-;; add ] as a leader key when in insert mode
-(setq evil-leader/non-normal-key "]")
-(when evil-leader/non-normal-key
-  (let ((key (read-kbd-macro evil-leader/non-normal-key))
-        (key2 (read-kbd-macro (concat evil-leader/non-normal-key
-                                      evil-leader/non-normal-key))))
-    (define-key evil-emacs-state-map key evil-leader/map)
-    (define-key evil-insert-state-map key evil-leader/map)
-    ;; not works
-    ;; (define-key evil-emacs-state-map key2 #'(lambda (N) (interactive "p") (self-insert-command N)))
-    ;; (define-key evil-insert-state-map key2 #'(lambda (N) (interactive "p") (self-insert-command N)))
+(evil-leader/set-key "]s" 'save-buffer)
+(evil-leader/set-key "]e" 'eval-last-sexp)
+(evil-leader/set-key "]l" 'recenter-top-bottom)
+(evil-leader/set-key "]b" 'bookmark-set)
+(evil-leader/set-key "]g" 'keyboard-quit)
+(evil-leader/set-key "]m" 'helm-bookmarks)
+(evil-leader/set-key "]q" 'query-replace-regexp)
+(evil-leader/set-key "]1" 'delete-other-windows)
+(evil-leader/set-key "]2" 'split-window-vertically)
+(evil-leader/set-key "]3" 'split-window-horizontally)
+(evil-leader/set-key "]c" 'aspk-ctrl-c-ctrl-c)
 
-    (define-key evil-normal-state-map key evil-leader/map)
-    (define-key evil-visual-state-map key evil-leader/map)
-    (define-key evil-normal-state-map key2 nil)
-    (define-key evil-visual-state-map key2 nil)))
+
 
 ;; above lines not work. So using this way.
 ;; (define-key evil-insert-state-map (kbd "]]") 'toggle-input-method)
-(define-key evil-insert-state-map (kbd "]]") 'aspk-show-hide-ansi-term)
+;; (define-key evil-insert-state-map (kbd "]]") 'aspk-show-hide-ansi-term)
 ;; (define-key evil-insert-state-map (kbd "]]") 'pns-expand-template-by-name)
 
     ;; (define-key evil-emacs-state-map
