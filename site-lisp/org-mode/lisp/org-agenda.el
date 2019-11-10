@@ -7560,6 +7560,8 @@ also press `-' or `+' to switch between filtering and excluding."
 	(setq-local org-global-tags-completion-table
 		    (org-global-tags-completion-table)))
       (let ((completion-ignore-case t))
+
+    (setq org-global-tags-completion-table (aspk-org-get-all-tags-in-agenda-view))
 	(setq tag (completing-read
 		   "Tag: " org-global-tags-completion-table nil t))))
     (cond

@@ -367,4 +367,17 @@
   (evil-leader/set-key "a" 'org-agenda-list))
 
 
+(defun aspk-org-get-all-tags-in-agenda-view ()
+  "get all tags in agenda view"
+  ;; (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((tags nil))
+      (while (not (eolp))
+        ;; (message "%s" (org-get-at-bol 'tags))
+        (mapcar (lambda (x) (add-to-list 'tags x)) (org-get-at-bol 'tags))
+        (forward-line))
+      ;; (message "all tags: %s" tags)
+      tags)))
+
 (provide 'init-org)
