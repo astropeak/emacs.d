@@ -126,7 +126,8 @@
 
 ;; org capture
 (require 'org-capture)
-(setq org-directory (expand-file-name "~/OneDrive/Dropbox/org"))
+(setq org-directory (expand-file-name (or (and (boundp 'org-directory-local) org-directory-local)
+					  "~/OneDrive/Dropbox/org")))
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (define-key global-map "\C-cc" 'org-capture)
 

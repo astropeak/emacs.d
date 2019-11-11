@@ -1218,20 +1218,22 @@ The full path into relative path insert it as a local file link in org-mode"
   (aspk/bind-temporary-keymap
    (list (cons "s" '(progn (goto-char (+ 0 (point)))
                            (forward-symbol 1)))
-         (cons "S" '(forward-symbol -1))
+         (cons "a" '(forward-symbol -1))
          ;; (cons "s" '(backward-sy))
-         (cons "b" '(forward-list 1))
-         (cons "B" '(backward-list 1))
+         ;; (cons "b" '(forward-list 1))
+         ;; (cons "B" '(backward-list 1))
 
          (cons "w" '(progn (goto-char (+ 0 (point)))
                            (aspk/forward-sexp 1)))
-         (cons "e" '(aspk/forward-sexp -1))
+         (cons "q" '(aspk/forward-sexp -1))
          ;; TODO: There should also be an forward-down-list
          (cons "r" '(backward-up-list))
          (cons "f" '(forward-list))
          (cons "d" '(backward-list))
+         (cons "p" '(scroll-up-command))
+         (cons "o" '(scroll-down-command))
          )
-   "s: symbol, b: block"
+   "s/a: symbol, p/o:page, w/q: sexp, f/d: list, r: up-list"
 
    ;; TODO: when backward list, there will be an error. e.g: {
    '(progn
