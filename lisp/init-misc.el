@@ -1154,14 +1154,25 @@ The full path into relative path insert it as a local file link in org-mode"
 
 
 (setq aspk/buffer-norecord nil)
+(defun aspk/switch-to-buffer-filter (b)
+  (and
+   ;; the buffer name should not start with '*', except *Org Agenda
+   (or (not (s-starts-with-p "*" b)) (s-starts-with-p "*Org Agenda" b))
+   ;; the buffer name should not start with "CAPTURE-"
+   (not (s-starts-with-p "CAPTURE-" b))
+   ;; the buffer name should not equal ' *Agenda Commands*'
+   (not (string-equal " *Agenda Commands*" b)))
+  )
+
 (defun aspk/switch-to-buffer-after-advice (buffer-or-name &optional norecord force-same-window)
   (unless norecord
     (unless aspk/buffer-norecord
       (let ((b (if (stringp buffer-or-name)
                    buffer-or-name
                  (buffer-name buffer-or-name))))
-        (aspk/delete-from-buffer-list b)
-        (aspk/add-to-top-of-buffer-list b)))))
+        (when (aspk/switch-to-buffer-filter b)
+          (aspk/delete-from-buffer-list b)
+          (aspk/add-to-top-of-buffer-list b))))))
 
 ;; (defadvice switch-to-buffer (after record-buffer)
 ;;   (unless norecord
@@ -1182,8 +1193,9 @@ The full path into relative path insert it as a local file link in org-mode"
   (interactive)
 
   ;; add current
-  (aspk/delete-from-buffer-list (buffer-name))
-  (aspk/add-to-top-of-buffer-list (buffer-name))
+  (when (aspk/switch-to-buffer-filter (buffer-name))
+    (aspk/delete-from-buffer-list (buffer-name))
+    (aspk/add-to-top-of-buffer-list (buffer-name)))
 
   (setq aspk/buffer-index 1)
   (progn (setq aspk/buffer-norecord t)
