@@ -197,7 +197,7 @@
 (defun eoh-select ()
   "Select headlines with helm. input is `eoh-headlines'"
   (interactive)
-  (helm :sources '(eoh-history-source eoh-helm-source) :buffer "EOH"))
+  (helm :sources '(eoh-history-source eoh-helm-source) :buffer "*EOH*"))
 
 ;; add files
 ;;    #+NAME: add-files
