@@ -1156,13 +1156,25 @@ The full path into relative path insert it as a local file link in org-mode"
 (setq aspk/buffer-norecord nil)
 (defun aspk/switch-to-buffer-filter (b)
   (and
+   ;; the buffer name hsould not starts with ' '
+   (not (s-starts-with-p " " b))
    ;; the buffer name should not start with '*', except *Org Agenda
    (or (not (s-starts-with-p "*" b)) (s-starts-with-p "*Org Agenda" b))
    ;; the buffer name should not start with "CAPTURE-"
    (not (s-starts-with-p "CAPTURE-" b))
-   ;; the buffer name should not equal ' *Agenda Commands*'
-   (not (string-equal " *Agenda Commands*" b)))
+   ;; this is the pns buffer
+   (not (string-equal "Template" b)))
   )
+
+;; (aspk/switch-to-buffer-filter " *Org todo*")
+
+(defun aspk/switch-to-buffer-before-advice (buffer-or-name &optional norecord force-same-window)
+  (unless norecord
+    (unless aspk/buffer-norecord
+      (let ((b (buffer-name (current-buffer))))
+        (when (aspk/switch-to-buffer-filter b)
+          (aspk/delete-from-buffer-list b)
+          (aspk/add-to-top-of-buffer-list b))))))
 
 (defun aspk/switch-to-buffer-after-advice (buffer-or-name &optional norecord force-same-window)
   (unless norecord
@@ -1185,6 +1197,7 @@ The full path into relative path insert it as a local file link in org-mode"
 ;; TODO: window-normalize-buffer-to-switch-to, add advice to this function. which is called by both switch-to-buffer and pop-to-buffer
 (if (fboundp 'advice-add)
     ;; (advice-add 'switch-to-buffer :after #'aspk/switch-to-buffer-after-advice)
+    (advice-add 'window-normalize-buffer-to-switch-to :before #'aspk/switch-to-buffer-before-advice)
     (advice-add 'window-normalize-buffer-to-switch-to :after #'aspk/switch-to-buffer-after-advice)
   (ad-activate 'switch-to-buffer))
 ;; (advice-remove 'switch-to-buffer #'aspk/switch-to-buffer-after-advice)
