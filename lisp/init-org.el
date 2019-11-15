@@ -127,7 +127,7 @@
 ;; org capture
 (require 'org-capture)
 (setq org-directory (expand-file-name (or (and (boundp 'org-directory-local) org-directory-local)
-					  "~/OneDrive/Dropbox/org")))
+                                          "~/OneDrive/Dropbox/org")))
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (define-key global-map "\C-cc" 'org-capture)
 
@@ -207,21 +207,24 @@
 (org-defkey org-agenda-mode-map "l" 'org-agenda-do-date-later)
 (org-defkey org-agenda-mode-map "h" 'org-agenda-do-date-earlier)
 
-;; (setq org-agenda-files (list
-;;                         (concat org-directory "/todo.org")
-;;                         (concat org-directory "/journal.org")
-;;                         (concat org-directory "/notes.org")
-;;                         ))
-
 (setq aspk-tmp-all-org-files
-      (cl-loop for f in (f-files org-directory nil t)
+      (cl-loop for f in (f-files (concat org-directory "/code-reading") nil t)
                if (and (or (s-ends-with-p ".org" f)
-                      (s-ends-with-p ".org_archive" f))
+                           (s-ends-with-p ".org_archive" f))
                        ;; DONE: add starts not with .
                        (not (s-starts-with-p "." f))
                        )
                collect f))
-(setq org-agenda-files aspk-tmp-all-org-files)
+
+(setq org-agenda-files (append (list
+                                (concat org-directory "/todo.org")
+                                (concat org-directory "/journal.org")
+                                ;; (concat org-directory "/notes.org")
+                                )
+                               aspk-tmp-all-org-files
+                               ))
+
+;; (setq org-agenda-files aspk-tmp-all-org-files)
 ;; (setq org-agenda-files (list (concat org-directory "/journal.org")))
 
 
