@@ -64,12 +64,12 @@
          )
         local-file)))))
 
-(push '("\\.el$" flymake-elisp-init) flymake-allowed-file-name-masks)
+;; (push '("\\.el$" flymake-elisp-init) flymake-allowed-file-name-masks)
 
-;; ;; workaround for (eq buffer-file-name nil)
-(defun emacs-lisp-mode-hook-flymake-elisp ()
-  (if buffer-file-name (flymake-mode)))
-(add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-hook-flymake-elisp)
+;; ;; ;; workaround for (eq buffer-file-name nil)
+;; (defun emacs-lisp-mode-hook-flymake-elisp ()
+;;   (if buffer-file-name (flymake-mode)))
+;; (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-hook-flymake-elisp)
 
 
 (provide 'init-elisp)
