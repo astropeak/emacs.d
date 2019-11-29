@@ -147,11 +147,31 @@
         ("p" "Perl" entry (file+headline ,(concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %T\n  %?")
         ("j" "Journal" entry (file+olp+datetree ,(concat org-directory "/journal.org"))
 
-         (function aspk-code-reading-create-a-snippet)
+         (function aspk-org-caputre-journal)
          ;; "* %^{Title}\n  %T\n  %? \n\n  %a\n"
          :empty-lines-before 1
          :tree-type week
          )))
+
+;; copied from aspk-code-reading-create-a-snippet 
+(defun aspk-org-caputre-journal ()
+  (let ((lang (pns-get-current-mode))
+        (region-str (if mark-active (buffer-substring-no-properties (region-beginning) (region-end)) "")))
+    (if (equal region-str "")
+        "* %?"
+      (format "* %s: %%?\n\n  #+file %s:%s\n  #+begin_src %s\n%s\n  #+end_src\n\n"
+              (file-name-nondirectory (or buffer-file-name (buffer-name)))
+              (aspk-get-current-buffer-file-name)
+              (line-number-at-pos (region-beginning))
+              lang
+              (if (equal region-str "")
+                  "  "
+                ;; delete empty lines in beginning and end of region-str
+                ;; TODO: below line is buggy, so commente ti for now
+                ;; (setq region-str (replace-regexp-in-string "^[ \t\n]*\\(.*\\)[ \t]*$" "\\1" region-str))
+                (pns-indent-src-code-string (s-trim region-str) lang 2))))))
+
+
 
 (add-to-list 'org-capture-mode-hook
              (lambda ()
@@ -383,5 +403,41 @@
         (forward-line))
       ;; (message "all tags: %s" tags)
       tags)))
+
+
+;; (setq src-block-name "main")
+;; (setq filename "~/org/tags.org")
+
+(defun aspk-execute-org-src-block (filename src-block-name)
+  "Load the given src-block-name in filename"
+  (interactive)
+  (with-current-buffer (find-file-noselect filename)
+    ;; (save-excursion
+    (org-show-all)
+    (goto-char (point-min))
+    (re-search-forward (concat org-babel-src-name-regexp src-block-name))
+    (ignore-errors (org-babel-execute-src-block))
+    (save-buffer)
+    ;; )
+    )
+  )
+
+(defun aspk-org-load-tags ()
+  (interactive)
+  (aspk-execute-org-src-block (concat org-directory "/tags.org") "main")
+  )
+
+(aspk-org-load-tags)
+
+(setq aspk-org-electric-insert-time-stamp-chars '(10))
+(defun aspk-org-electric-insert-time-stamp ()
+  "Insert a time stamp when newline is pressed on a headline"
+  (when (and (save-excursion (forward-line -1) (outline-on-heading-p))
+             (memq last-command-event aspk-org-electric-insert-time-stamp-chars))
+    (indent-according-to-mode)
+    (aspk-org-time-stamp)
+    ))
+;; (remove-hook 'post-self-insert-hook #'aspk-org-electric-insert-time-stamp))
+(add-hook 'post-self-insert-hook #'aspk-org-electric-insert-time-stamp)
 
 (provide 'init-org)
