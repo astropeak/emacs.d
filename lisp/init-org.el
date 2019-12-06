@@ -440,4 +440,9 @@
 ;; (remove-hook 'post-self-insert-hook #'aspk-org-electric-insert-time-stamp))
 (add-hook 'post-self-insert-hook #'aspk-org-electric-insert-time-stamp)
 
+(setq org-agenda-custom-commands
+      '(("n" "Agenda and all TODOs"
+         ((tags "vcjobs" (org-agenda-sorting-strategy timestamp-up)))
+         )))
+
 (provide 'init-org)

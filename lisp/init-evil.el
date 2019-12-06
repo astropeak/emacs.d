@@ -457,7 +457,8 @@ to replace the symbol under cursor"
 ;; 有了两个前缀: ], ]], 我可以绑定50多个快捷键. 这完全足够了. 我要所所有常用的键都绑定上. 一个目标是不再按ctrl键.
 (defun aspk-toggle-evil-state ()
   (interactive)
-  (if (or (equal evil-state 'insert) (equal evil-state 'emacs))
+  ;; (if (or (equal evil-state 'insert) (equal evil-state 'emacs))
+  (if t
       (evil-normal-state)
     (evil-insert-state)))
 
