@@ -189,7 +189,7 @@ to replace the symbol under cursor"
 ;; add ] as a leader key when in insert mode
 (setq evil-leader/non-normal-key ";")
 (global-set-key (kbd "]") (lambda () (interactive) (insert ";")))
-(evil-leader/set-key "]" (lambda () (interactive) (insert "]"))
+(evil-leader/set-key "]" (lambda () (interactive) (insert "]")))
 
 (when evil-leader/non-normal-key
   (let ((key (read-kbd-macro evil-leader/non-normal-key))
