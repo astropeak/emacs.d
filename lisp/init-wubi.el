@@ -11,7 +11,9 @@
 ;; key bindding
 (define-key global-map "\C-c]" 'toggle-input-method)
 (when (featurep 'evil-leader)
-  (evil-leader/set-key "]]" 'toggle-input-method))
+  ;; (evil-leader/set-key ";;" 'toggle-input-method)
+  (evil-leader/set-key "i" 'toggle-input-method)
+  )
 
 (wubi-toggle-quanjiao-banjiao -1)
 

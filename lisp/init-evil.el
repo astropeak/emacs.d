@@ -187,7 +187,10 @@ to replace the symbol under cursor"
 (setq evil-leader/leader "<SPC>")
 (require 'evil-leader)
 ;; add ] as a leader key when in insert mode
-(setq evil-leader/non-normal-key "]")
+(setq evil-leader/non-normal-key ";")
+(global-set-key (kbd "]") (lambda () (interactive) (insert ";")))
+(evil-leader/set-key "]" (lambda () (interactive) (insert "]"))
+
 (when evil-leader/non-normal-key
   (let ((key (read-kbd-macro evil-leader/non-normal-key))
         (key2 (read-kbd-macro (concat evil-leader/non-normal-key
@@ -440,7 +443,7 @@ to replace the symbol under cursor"
   ;; "f" 'helm-yas-complete
   ;; "v" 'pcs-create-snippet
   "b" 'aspk/switch-buffer
-  "i" 'indent-buffer
+  ";i" 'indent-buffer
   "r" 'er/expand-region
   "x" 'helm-M-x
   ;; "a" 'ace-jump-mode
@@ -471,17 +474,17 @@ to replace the symbol under cursor"
 (evil-leader/set-key "f" 'aspk-toggle-evil-state) ;; this key bind is great, why I don't find this way before
 (evil-leader/set-key "hk" 'describe-key)
 
-(evil-leader/set-key "]s" 'save-buffer)
-(evil-leader/set-key "]e" 'eval-last-sexp)
-(evil-leader/set-key "]l" 'recenter-top-bottom)
-(evil-leader/set-key "]b" 'bookmark-set)
-(evil-leader/set-key "]g" 'keyboard-quit)
-(evil-leader/set-key "]m" 'helm-bookmarks)
-(evil-leader/set-key "]q" 'query-replace-regexp)
-(evil-leader/set-key "]1" 'delete-other-windows)
-(evil-leader/set-key "]2" 'split-window-vertically)
-(evil-leader/set-key "]3" 'split-window-horizontally)
-(evil-leader/set-key "]c" 'aspk-ctrl-c-ctrl-c)
+(evil-leader/set-key ";s" 'save-buffer)
+(evil-leader/set-key ";e" 'eval-last-sexp)
+(evil-leader/set-key ";l" 'recenter-top-bottom)
+(evil-leader/set-key ";b" 'bookmark-set)
+(evil-leader/set-key ";g" 'keyboard-quit)
+(evil-leader/set-key ";m" 'helm-bookmarks)
+(evil-leader/set-key ";q" 'query-replace-regexp)
+(evil-leader/set-key ";1" 'delete-other-windows)
+(evil-leader/set-key ";2" 'split-window-vertically)
+(evil-leader/set-key ";3" 'split-window-horizontally)
+(evil-leader/set-key ";c" 'aspk-ctrl-c-ctrl-c)
 
 
 
