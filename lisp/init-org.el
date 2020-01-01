@@ -209,8 +209,8 @@
 ;;         (sequence "WAITING(w@/!)" "SOMEDAY(S@/!)" "PROJECT(P@/!)" "|" "CANCELLED(c@/!)")))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "STARTED(s)" "DEFERED(f)" "CHECK(v" "|" "DONE(d@/!)")
-        (sequence "WAITING(w)" "SOMEDAY(S)" "PROJECT(P)" "|" "CANCELLED(c@/!)")))
+      '((sequence "TODO(t)" "STARTED(s)" "DEFERED(f)" "CHECK(v" "|" "DONE(d)")
+        (sequence "WAITING(w)" "SOMEDAY(S)" "PROJECT(P)" "|" "CANCELLED(c)")))
 
 ;; org mobile
 (setq org-mobile-directory "~/Box Sync/mobileOrg")
@@ -415,8 +415,8 @@
     ;; (save-excursion
     (org-show-all)
     (goto-char (point-min))
-    (re-search-forward (concat org-babel-src-name-regexp src-block-name))
-    (ignore-errors (org-babel-execute-src-block))
+    (while (re-search-forward (concat org-babel-src-name-regexp src-block-name) nil t)
+      (ignore-errors (org-babel-execute-src-block)))
     (save-buffer)
     ;; )
     )
@@ -444,5 +444,9 @@
       '(("n" "Agenda and all TODOs"
          ((tags "vcjobs" (org-agenda-sorting-strategy timestamp-up)))
          )))
+
+
+;; Load aspk-org-month-agenda from ~/org/sources/aspk-org.org
+(aspk-execute-org-src-block (concat org-directory "/sources/aspk-org.org") "main")
 
 (provide 'init-org)
