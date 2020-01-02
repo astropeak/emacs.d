@@ -416,7 +416,8 @@
     (org-show-all)
     (goto-char (point-min))
     (while (re-search-forward (concat org-babel-src-name-regexp src-block-name) nil t)
-      (ignore-errors (org-babel-execute-src-block)))
+      (save-excursion  ;; below line might change point
+	(ignore-errors (org-babel-execute-src-block))))
     (save-buffer)
     ;; )
     )
