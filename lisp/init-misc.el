@@ -1335,11 +1335,23 @@ The full path into relative path insert it as a local file link in org-mode"
 ;; (set-face-background 'default "old lace")
 ;; (set-face-background 'default "ffffff")
 
+(defun aspk-set-background-color-old-lace ()
+  (interactive)
+  (set-face-background 'default "old lace"))
+
+(defun aspk-set-background-color-white ()
+  (interactive)
+  (set-face-background 'default "ffffff"))
+
 ;; save book automatically after storing one
 (add-to-list 'bmkp-after-set-hook 'bookmark-save)
 
 ;; the removes the confirmation when save a book mark.
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
+;; disable c-x c-c, which is bined to save-buffers-kill-terminal. Which is now bind to evil-leader 'cq'
+(global-unset-key (kbd "C-x C-c"))
+
 
 (require 'eoh)
 (require 'pcs)

@@ -345,7 +345,6 @@
   "Like org-time-stamp, but just insert the current timestamp without prompting"
   (interactive)
   (insert (format-time-string (org-time-stamp-format 'long nil) (org-current-effective-time)))
-  (org-return-indent)
   )
 ;;; overwrite the old org-time-stamp keybinding
 (define-key org-mode-map "\C-c." 'aspk-org-time-stamp)
@@ -437,6 +436,7 @@
              (memq last-command-event aspk-org-electric-insert-time-stamp-chars))
     (indent-according-to-mode)
     (aspk-org-time-stamp)
+    (org-return-indent)
     ))
 ;; (remove-hook 'post-self-insert-hook #'aspk-org-electric-insert-time-stamp))
 (add-hook 'post-self-insert-hook #'aspk-org-electric-insert-time-stamp)

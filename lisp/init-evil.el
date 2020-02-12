@@ -485,6 +485,7 @@ to replace the symbol under cursor"
 (evil-leader/set-key ";2" 'split-window-vertically)
 (evil-leader/set-key ";3" 'split-window-horizontally)
 (evil-leader/set-key ";c" 'aspk-ctrl-c-ctrl-c)
+(evil-leader/set-key "cq" 'save-buffers-kill-terminal) ;; exit emacs
 
 
 
@@ -525,5 +526,12 @@ to replace the symbol under cursor"
           (lambda ()
             (when (buffer-file-name)
                   (save-buffer))))
+
+(defun aspk-evil-set-cursor-type-for-eink ()
+  (interactive)
+  (setq evil-normal-state-cursor nil)
+  (setq evil-insert-state-cursor nil)
+  (setq evil-emacs-state-cursor nil)
+  )
 
 (provide 'init-evil)
