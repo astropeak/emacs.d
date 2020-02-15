@@ -486,7 +486,10 @@ to replace the symbol under cursor"
 (evil-leader/set-key ";3" 'split-window-horizontally)
 (evil-leader/set-key ";c" 'aspk-ctrl-c-ctrl-c)
 (evil-leader/set-key "cq" 'save-buffers-kill-terminal) ;; exit emacs
-
+(evil-leader/set-key "nn" 'narrow-to-region)
+(evil-leader/set-key "ns" 'org-narrow-to-subtree)
+(evil-leader/set-key "nb" 'org-narrow-to-block)
+(evil-leader/set-key "nw" 'widen)
 
 
 ;; above lines not work. So using this way.
