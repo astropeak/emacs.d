@@ -302,8 +302,8 @@
    (java . t)
    (C . t) ;;both for C and C++
    (js . t)
-   (sh         . t)
-   (scala      . t)
+   (shell         . t) ;; ob-sh=>ob-shell in new org version
+   ;; (scala      . t) ;; ob-scale.el not exists in new org version
    (clojure    . t)
    (python     . t)
    (ruby       . t)
@@ -387,7 +387,10 @@
 (org-defkey org-agenda-mode-map "S" 'org-agenda-schedule)
 
 (when (featurep 'evil-leader)
-  (evil-leader/set-key "a" 'org-agenda-list))
+  (evil-leader/set-key "a" 'org-agenda-list)
+  (evil-leader/set-key "t" 'org-todo)
+  (evil-leader/set-key "d" 'org-set-tags-command)
+  )
 
 
 (defun aspk-org-get-all-tags-in-agenda-view ()
@@ -449,5 +452,10 @@
 
 ;; Load aspk-org-month-agenda from ~/org/sources/aspk-org.org
 (aspk-execute-org-src-block (concat org-directory "/sources/aspk-org.org") "main")
+
+
+;; disable undo-tree mode in org-mode
+;; (add-to-list 'undo-tree-incompatible-major-modes 'org-mode)
+
 
 (provide 'init-org)
