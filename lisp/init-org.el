@@ -228,13 +228,15 @@
 (org-defkey org-agenda-mode-map "h" 'org-agenda-do-date-earlier)
 
 (setq aspk-tmp-all-org-files
-      (cl-loop for f in (f-files (concat org-directory "/code-reading") nil t)
-               if (and (or (s-ends-with-p ".org" f)
-                           (s-ends-with-p ".org_archive" f))
-                       ;; DONE: add starts not with .
-                       (not (s-starts-with-p "." f))
-                       )
-               collect f))
+      (let ((dir (concat org-directory "/code-reading")))
+        (when (file-exists-p dir)
+          (cl-loop for f in (f-files dir nil t)
+                   if (and (or (s-ends-with-p ".org" f)
+                               (s-ends-with-p ".org_archive" f))
+                           ;; DONE: add starts not with .
+                           (not (s-starts-with-p "." f))
+                           )
+                   collect f))))
 
 (setq org-agenda-files (append (list
                                 (concat org-directory "/todo.org")
@@ -419,7 +421,7 @@
     (goto-char (point-min))
     (while (re-search-forward (concat org-babel-src-name-regexp src-block-name) nil t)
       (save-excursion  ;; below line might change point
-	(ignore-errors (org-babel-execute-src-block))))
+        (ignore-errors (org-babel-execute-src-block))))
     (save-buffer)
     ;; )
     )
@@ -451,7 +453,9 @@
 
 
 ;; Load aspk-org-month-agenda from ~/org/sources/aspk-org.org
-(aspk-execute-org-src-block (concat org-directory "/sources/aspk-org.org") "main")
+(let ((file (concat org-directory "/sources/aspk-org.org")))
+  (when (file-exists-p file)
+    (aspk-execute-org-src-block file "main")))
 
 
 ;; disable undo-tree mode in org-mode
