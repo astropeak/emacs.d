@@ -68,8 +68,8 @@
   (let ((lang (pns-get-current-mode))
         (region-str (if mark-active (buffer-substring-no-properties (region-beginning) (region-end)) "")))
     (if (equal region-str "")
-        "* %^{Title}\n  %T\n  %?\n\n"
-      (format "* %s: %%^{Title}\n  %%T\n\n  %%?\n\n  #+file %s:%s\n  #+begin_src %s\n%s\n  #+end_src\n\n"
+        "* %?"
+      (format "* %s: %%?\n\n  #+file %s:%s\n  #+begin_src %s\n%s\n  #+end_src\n\n"
               (file-name-nondirectory (or buffer-file-name (buffer-name)))
               (aspk-get-current-buffer-file-name)
               (line-number-at-pos (region-beginning))
