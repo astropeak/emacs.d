@@ -8,7 +8,14 @@
 
 ;;; Code:
 
-(quail-define-rules
+(setq wubi-rules nil)
+
+(defmacro wubi-quail-define-rules (&rest rules)
+  "Call quail-define-rules, and store rules to `wubi-rules'"
+  (setq wubi-rules rules)
+  `(quail-define-rules ,@rules))
+
+(wubi-quail-define-rules
 ("a" ["工" "戈"])
 ("aa" ["式"])
 ("aaa" ["工"])
@@ -88966,6 +88973,26 @@
 ("yyyy" ["文言"])
 ("yyyf" ["譶"])
 )
+
+
+(setq wubi-word-to-key (make-hash-table :test 'equal))
+(cl-loop for x in wubi-rules 
+         do
+         ;; (message "y: %s, x: %s"  y (aref (nth 1 x) 0))
+         (cl-loop with key = (nth 0 x)
+                  for word across (nth 1 x)
+                  do
+                  ;; (message "y2 : %s, x: %s"  y (nth 0 x))
+                  (when (> (length key) (length (gethash word wubi-word-to-key)))
+                    (puthash word key wubi-word-to-key))
+                  ))
+
+(defun wubi-get-word-key (word)
+  "Get the wubi key for the given `word'"
+  (gethash word wubi-word-to-key))
+
+;; (wubi-get-word-key "虎")
+
 
 (defconst chinese-symbols
   "、 。 · ˉ ˇ ¨ 〃 々 — ～ ‖ … ‘ ’ “ ” 〔 〕 〈 〉 《 》
