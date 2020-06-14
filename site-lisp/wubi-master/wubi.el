@@ -250,6 +250,7 @@ for negative ARG."
 (wubi-toggle-simplified-or-traditional wubi-traditional-p)
 (wubi-toggle-quanjiao-banjiao wubi-quanjiao-p)
 
+(require 'aspk-wubi)
 (provide 'wubi)
 
 ;;; wubi.el ends here
