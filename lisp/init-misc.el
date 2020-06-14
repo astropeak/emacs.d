@@ -1353,6 +1353,8 @@ The full path into relative path insert it as a local file link in org-mode"
 (global-unset-key (kbd "C-x C-c"))
 
 
+(setq auto-save-interval 5) ;; value less than 5 is equivalent to 20.
+
 (require 'eoh)
 (require 'pcs)
 (require 'helm-c-yasnippet)

@@ -7,7 +7,8 @@
 ;; (org-insert-heading-respect-content &optional INVISIBLE-OK)
 (define-key org-mode-map (kbd "<C-return>") 'org-meta-return)
 (when (featurep 'evil-leader)
-  (evil-leader/set-key "e" 'org-meta-return))
+  (evil-leader/set-key "e" 'org-meta-return)
+  (evil-leader/set-key "E" 'org-insert-heading))
 
 ;; {{ export org-mode in Chinese into PDF
 ;; @see http://freizl.github.io/posts/tech/2012-04-06-export-orgmode-file-in-Chinese.html
@@ -44,7 +45,8 @@
       org-fast-tag-selection-single-key 'expert
       org-export-kill-product-buffer-when-displayed t
       org-export-odt-preferred-output-format "doc"
-      org-tags-column 80
+      org-tags-column -60
+      ;; org-tags-column 0
       ;; org-startup-indented t
       )
 
