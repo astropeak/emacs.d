@@ -8685,6 +8685,7 @@ if it was hidden in the outline."
   (let ((win (selected-window)))
     (org-agenda-goto t)
     (when full-entry (org-show-entry))
+    (recenter-top-bottom 'top)
     (select-window win)))
 
 (defvar org-agenda-show-window nil)
