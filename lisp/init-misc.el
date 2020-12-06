@@ -1343,6 +1343,9 @@ The full path into relative path insert it as a local file link in org-mode"
   (interactive)
   (set-face-background 'default "ffffff"))
 
+;; set the default background color
+(aspk-set-background-color-old-lace)
+
 ;; save book automatically after storing one
 (add-to-list 'bmkp-after-set-hook 'bookmark-save)
 

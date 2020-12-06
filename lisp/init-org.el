@@ -243,6 +243,11 @@
 (setq org-agenda-files (append (list
                                 (concat org-directory "/todo.org")
                                 (concat org-directory "/journal.org")
+                                (concat org-directory "/investment.org")
+                                (concat org-directory "/book.org")
+                                (concat org-directory "/cerence.org")
+                                (concat org-directory "/me.org")
+                                (concat org-directory "/../project/resume/resume.org")
                                 ;; (concat org-directory "/notes.org")
                                 )
                                aspk-tmp-all-org-files
@@ -439,8 +444,9 @@
 (setq aspk-org-electric-insert-time-stamp-chars '(10))
 (defun aspk-org-electric-insert-time-stamp ()
   "Insert a time stamp when newline is pressed on a headline"
-  (when (and (save-excursion (forward-line -1) (outline-on-heading-p))
-             (memq last-command-event aspk-org-electric-insert-time-stamp-chars))
+  (when (and
+         (save-excursion (forward-line -1) (outline-on-heading-p))
+         (memq last-command-event aspk-org-electric-insert-time-stamp-chars))
     (indent-according-to-mode)
     (aspk-org-time-stamp)
     (org-return-indent)
