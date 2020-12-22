@@ -247,6 +247,7 @@
                                 (concat org-directory "/book.org")
                                 (concat org-directory "/cerence.org")
                                 (concat org-directory "/me.org")
+                                (concat org-directory "/asr.org")
                                 (concat org-directory "/../project/resume/resume.org")
                                 ;; (concat org-directory "/notes.org")
                                 )
