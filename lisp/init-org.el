@@ -48,6 +48,7 @@
       org-tags-column -60
       ;; org-tags-column 0
       ;; org-startup-indented t
+      org-cycle-include-plain-lists  'integrate
       )
 
 ;; Refile targets include this file and any file contributing to the agenda - up to 5 levels deep
@@ -146,14 +147,32 @@
          "* %^{Title}\n  %?")
         ("w" "Web development" entry (file+headline ,(concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %T\n  %?")
         ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %T\n  %i\n\n  %?")
-        ("p" "Perl" entry (file+headline ,(concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %T\n  %?")
+        ("i" "Investment" entry
+         (file ,(concat org-directory "/investment.org"))
+         "* %?\n"
+         :empty-lines-before 1
+         )
+        ("b" "Body" entry
+         (file ,(concat org-directory "/body.org"))
+         "* %?\n"
+         :empty-lines-before 1
+         )
         ("j" "Journal" entry (file+olp+datetree ,(concat org-directory "/journal.org"))
 
          (function aspk-org-caputre-journal)
          ;; "* %^{Title}\n  %T\n  %? \n\n  %a\n"
          :empty-lines-before 1
          :tree-type week
-         )))
+         )
+	    ("p" "Protocol" entry (file+headline ,(concat org-directory "/captured.org") "Inbox")
+        "* %:description : %?\n\n  %:link\n  #+BEGIN_QUOTE\n  %c\n  #+END_QUOTE\n"
+         :empty-lines-before 1
+        )
+	    ("L" "Protocol Link" entry (file+headline ,(concat org-directory "/captured.org") "Inbox")
+        "* %:description : %?\n\n  %:link\n"
+        :empty-lines-before 1
+        )
+        ))
 
 ;; copied from aspk-code-reading-create-a-snippet 
 (defun aspk-org-caputre-journal ()
@@ -201,9 +220,9 @@
 (setq org-fast-tag-selection-single-key (quote expert))
 (setq org-log-note-state 'time)
 (setq org-todo-log-states 'time)
-(setq org-agenda-dim-blocked-tasks 'invisible)
-;; (setq org-agenda-dim-blocked-tasks 't)
-(setq org-enforce-todo-dependencies t)
+;; (setq org-agenda-dim-blocked-tasks 'invisible)
+(setq org-agenda-dim-blocked-tasks 'nil)
+(setq org-enforce-todo-dependencies nil)
 (setq org-agenda-include-diary nil)  ;; do not include diary
 
 ;; (setq org-todo-keywords
@@ -248,10 +267,15 @@
                                 (concat org-directory "/cerence.org")
                                 (concat org-directory "/me.org")
                                 (concat org-directory "/asr.org")
+                                (concat org-directory "/body.org")
+                                (concat org-directory "/english.org")
+                                (concat org-directory "/wow.org")
+                                (concat org-directory "/guitar.org")
+                                (concat org-directory "/career-planning.org")
                                 (concat org-directory "/../project/resume/resume.org")
                                 ;; (concat org-directory "/notes.org")
                                 )
-                               aspk-tmp-all-org-files
+                               ;; aspk-tmp-all-org-files
                                ))
 
 ;; (setq org-agenda-files aspk-tmp-all-org-files)
@@ -343,6 +367,11 @@
 (defun peak-org-capture-journal ()
   (interactive)
   (org-capture nil "j"))
+
+(defun peak-org-capture-investment ()
+  (interactive)
+  (org-capture nil "i"))
+
 
 ;; THis problem happens on mac, emacs 25.
 (when *emacs25*
@@ -470,5 +499,10 @@
 ;; disable undo-tree mode in org-mode
 ;; (add-to-list 'undo-tree-incompatible-major-modes 'org-mode)
 
+;; make org note's time stamp active by changing %t to %T
+(setcdr (assq 'note org-log-note-headings)
+        "Note token on %T")
+
+(require 'org-protocol)
 
 (provide 'init-org)

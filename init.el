@@ -1,5 +1,6 @@
-
 ;; -*- coding: utf-8 -*-
+(setq gc-cons-threshold most-positive-fixnum)
+
 (setq emacs-load-start-time (current-time))
 (setq emacs-init-dir (file-name-directory load-file-name))
 (message "emacs init directory : %s" emacs-init-dir)
@@ -42,7 +43,7 @@
        (t nil)
        )
       )
-
+(setq *is-eink* (not (display-graphic-p)))
 ;;----------------------------------------------------------------------------
 ;; Functions (load all files in defuns-dir)
 ;; Copied from https://github.com/magnars/.emacs.d/blob/master/init.el
@@ -145,7 +146,7 @@
 ;; (require 'init-web-mode)
 ;; (require 'init-sr-speedbar)
 ;; (require 'init-slime)
-(when *emacs24* (require 'init-company))
+;; (when *emacs24* (require 'init-company))
 ;; stripe buffer shows different row colors for org table, but it also make org mode very slow for big org file. So I decide disabling it.
 ;; (require 'init-stripe-buffer)
 ;; (require 'init-eim) ;;  cannot be idle-required
@@ -160,7 +161,10 @@
 ;; misc has some crucial tools I need immediately
 (require 'init-misc)
 (require 'init-wubi)
-(require 'init-eink)
+
+;; if no screen, then we usually run it in an eink device
+(unless (display-graphic-p)
+  (require 'init-eink))
 
 ;; color theme
 ;; (require 'color-theme)
