@@ -148,9 +148,10 @@
         ("w" "Web development" entry (file+headline ,(concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %T\n  %?")
         ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %T\n  %i\n\n  %?")
         ("i" "Investment" entry
-         (file ,(concat org-directory "/investment.org"))
-         "* %?\n"
-         :empty-lines-before 1
+         (file+olp ,(concat org-directory "/investment.org") "交易日志")
+         "* %(format-time-string \"%y%m%d\") %?\n"
+         :prepend
+         :empty-lines-after 1
          )
         ("b" "Body" entry
          (file ,(concat org-directory "/body.org"))
