@@ -150,8 +150,8 @@
         ("i" "Investment" entry
          (file+olp ,(concat org-directory "/investment.org") "交易日志")
          "* %(format-time-string \"%y%m%d\") %?\n"
-         :prepend
          :empty-lines-after 1
+         :prepend t
          )
         ("b" "Body" entry
          (file ,(concat org-directory "/body.org"))
@@ -299,6 +299,11 @@
   "When add a note, enter evil insert state"
   (evil-insert-state)
   (aspk-set-mode-line-color))
+
+(defadvice org-insert-heading (after aspk-add-timestamp activate)
+  "Add a timestamp after the heading"
+  (insert (format "%s " (format-time-string "%y%m%d"))))
+
 
 ;; below line deactivate all advices added to org-add-log-note
 ;; (ad-deactivate 'org-add-log-note)

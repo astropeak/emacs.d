@@ -534,6 +534,7 @@ grab matched string, cssize them, and insert into kill ring"
 
 (defun my/paste-in-minibuffer ()
   (local-set-key (kbd "M-y") 'paste-from-x-clipboard)
+  ;; (local-set-key  (kbd "M-i")'toggle-input-method)
   )
 
 (add-hook 'minibuffer-setup-hook 'my/paste-in-minibuffer)
@@ -1290,9 +1291,14 @@ The full path into relative path insert it as a local file link in org-mode"
   (save-buffer)
   (shell-command (format "gcc %s && ./a.out" (buffer-file-name))))
 
+(defun config/smaller-font-size ()
+  (interactive)
+  (increment-default-font-height -10)
+  )
+
 (defun config/larger-font-size ()
   (interactive)
-  (increment-default-font-height 30)
+  (increment-default-font-height 10)
   )
 
 (defun aspk-remove-empty-blank-lines ()
@@ -1353,8 +1359,10 @@ The full path into relative path insert it as a local file link in org-mode"
 ;; disable c-x c-c, which is bined to save-buffers-kill-terminal. Which is now bind to evil-leader 'cq'
 (global-unset-key (kbd "C-x C-c"))
 
+(global-set-key (kbd "C-q") 'quoted-insert)
 
 (setq auto-save-interval 5) ;; value less than 5 is equivalent to 20.
+
 
 (require 'eoh)
 (require 'pcs)
