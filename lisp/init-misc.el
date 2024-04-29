@@ -1363,6 +1363,12 @@ The full path into relative path insert it as a local file link in org-mode"
 
 (setq auto-save-interval 5) ;; value less than 5 is equivalent to 20.
 
+(defun aspk-ediff-current-buffers ()
+  (interactive)
+  (let ((files (cl-loop for x in (window-list) collect (buffer-file-name (window-buffer  x)))))
+    (if (equal (length files) 2)
+        (ediff (nth 0 files) (nth 1 files))
+      (message "error: please display the two files that need to be compared in two windows first"))))
 
 (require 'eoh)
 (require 'pcs)
