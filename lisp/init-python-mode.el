@@ -3,7 +3,7 @@
 (setq interpreter-mode-alist
       (cons '("python" . python-mode) interpreter-mode-alist))
 
-(setq python-indent-offset 2)
+(setq python-indent-offset 4)
 ;; (setq python-indent-guess-indent-offset nil)
 
 ;;----------------------------------------------------------------------------

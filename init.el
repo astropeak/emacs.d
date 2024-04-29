@@ -145,7 +145,10 @@
 ;; (require 'init-web-mode)
 ;; (require 'init-sr-speedbar)
 ;; (require 'init-slime)
+
+;; 221220 disable company mode, as it's too slow on grid
 (when *emacs24* (require 'init-company))
+
 ;; stripe buffer shows different row colors for org table, but it also make org mode very slow for big org file. So I decide disabling it.
 ;; (require 'init-stripe-buffer)
 ;; (require 'init-eim) ;;  cannot be idle-required

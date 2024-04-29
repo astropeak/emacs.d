@@ -493,7 +493,7 @@ grab matched string, cssize them, and insert into kill ring"
   (interactive)
   (when buffer-file-name
     (copy-yank-str (file-truename buffer-file-name))
-    (message "file full path => clipboard & yank ring")
+    (message "file full path => clipboard & yank ring\n%s" (file-truename buffer-file-name))
     ))
 
 (defun copy-to-x-clipboard ()
@@ -1352,6 +1352,12 @@ The full path into relative path insert it as a local file link in org-mode"
 ;; disable c-x c-c, which is bined to save-buffers-kill-terminal. Which is now bind to evil-leader 'cq'
 (global-unset-key (kbd "C-x C-c"))
 
+(defun aspk-ediff-current-buffers ()
+  (interactive)
+  (let ((files (cl-loop for x in (window-list) collect (buffer-file-name (window-buffer  x)))))
+    (if (equal (length files) 2)
+        (ediff (nth 0 files) (nth 1 files))
+      (message "error: please display the two files that need to be compared in two windows first"))))
 
 (require 'eoh)
 (require 'pcs)
