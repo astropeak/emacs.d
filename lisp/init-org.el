@@ -7,7 +7,8 @@
 ;; (org-insert-heading-respect-content &optional INVISIBLE-OK)
 (define-key org-mode-map (kbd "<C-return>") 'org-meta-return)
 (when (featurep 'evil-leader)
-  (evil-leader/set-key "e" 'org-meta-return))
+  (evil-leader/set-key "e" 'org-meta-return)
+  (evil-leader/set-key "E" 'org-insert-heading))
 
 ;; {{ export org-mode in Chinese into PDF
 ;; @see http://freizl.github.io/posts/tech/2012-04-06-export-orgmode-file-in-Chinese.html
@@ -44,8 +45,10 @@
       org-fast-tag-selection-single-key 'expert
       org-export-kill-product-buffer-when-displayed t
       org-export-odt-preferred-output-format "doc"
-      org-tags-column 80
+      org-tags-column -60
+      ;; org-tags-column 0
       ;; org-startup-indented t
+      org-cycle-include-plain-lists  'integrate
       )
 
 ;; Refile targets include this file and any file contributing to the agenda - up to 5 levels deep
@@ -144,14 +147,33 @@
          "* %^{Title}\n  %?")
         ("w" "Web development" entry (file+headline ,(concat org-directory "/webdev.org") "Random notes") "* %^{Title}\n  %T\n  %?")
         ("m" "Misc" entry (file+headline "" "Miscellaneous") "* %^{Title}\n  %T\n  %i\n\n  %?")
-        ("p" "Perl" entry (file+headline ,(concat org-directory "/perl.org") "Random notes") "* %^{Title}\n  %T\n  %?")
+        ("i" "Investment" entry
+         (file+olp ,(concat org-directory "/investment.org") "交易日志")
+         "* %(format-time-string \"%y%m%d\") %?\n"
+         :empty-lines-after 1
+         :prepend t
+         )
+        ("b" "Body" entry
+         (file ,(concat org-directory "/body.org"))
+         "* %?\n"
+         :empty-lines-before 1
+         )
         ("j" "Journal" entry (file+olp+datetree ,(concat org-directory "/journal.org"))
 
          (function aspk-org-caputre-journal)
          ;; "* %^{Title}\n  %T\n  %? \n\n  %a\n"
          :empty-lines-before 1
          :tree-type week
-         )))
+         )
+	    ("p" "Protocol" entry (file+headline ,(concat org-directory "/captured.org") "Inbox")
+        "* %:description : %?\n\n  %:link\n  #+BEGIN_QUOTE\n  %c\n  #+END_QUOTE\n"
+         :empty-lines-before 1
+        )
+	    ("L" "Protocol Link" entry (file+headline ,(concat org-directory "/captured.org") "Inbox")
+        "* %:description : %?\n\n  %:link\n"
+        :empty-lines-before 1
+        )
+        ))
 
 ;; copied from aspk-code-reading-create-a-snippet 
 (defun aspk-org-caputre-journal ()
@@ -199,9 +221,9 @@
 (setq org-fast-tag-selection-single-key (quote expert))
 (setq org-log-note-state 'time)
 (setq org-todo-log-states 'time)
-(setq org-agenda-dim-blocked-tasks 'invisible)
-;; (setq org-agenda-dim-blocked-tasks 't)
-(setq org-enforce-todo-dependencies t)
+;; (setq org-agenda-dim-blocked-tasks 'invisible)
+(setq org-agenda-dim-blocked-tasks 'nil)
+(setq org-enforce-todo-dependencies nil)
 (setq org-agenda-include-diary nil)  ;; do not include diary
 
 ;; (setq org-todo-keywords
@@ -241,9 +263,20 @@
 (setq org-agenda-files (append (list
                                 (concat org-directory "/todo.org")
                                 (concat org-directory "/journal.org")
+                                (concat org-directory "/investment.org")
+                                (concat org-directory "/book.org")
+                                (concat org-directory "/cerence.org")
+                                (concat org-directory "/me.org")
+                                (concat org-directory "/asr.org")
+                                (concat org-directory "/body.org")
+                                (concat org-directory "/english.org")
+                                (concat org-directory "/wow.org")
+                                (concat org-directory "/guitar.org")
+                                (concat org-directory "/career-planning.org")
+                                (concat org-directory "/../project/resume/resume.org")
                                 ;; (concat org-directory "/notes.org")
                                 )
-                               aspk-tmp-all-org-files
+                               ;; aspk-tmp-all-org-files
                                ))
 
 ;; (setq org-agenda-files aspk-tmp-all-org-files)
@@ -266,6 +299,11 @@
   "When add a note, enter evil insert state"
   (evil-insert-state)
   (aspk-set-mode-line-color))
+
+(defadvice org-insert-heading (after aspk-add-timestamp activate)
+  "Add a timestamp after the heading"
+  (insert (format "%s " (format-time-string "%y%m%d"))))
+
 
 ;; below line deactivate all advices added to org-add-log-note
 ;; (ad-deactivate 'org-add-log-note)
@@ -335,6 +373,11 @@
 (defun peak-org-capture-journal ()
   (interactive)
   (org-capture nil "j"))
+
+(defun peak-org-capture-investment ()
+  (interactive)
+  (org-capture nil "i"))
+
 
 ;; THis problem happens on mac, emacs 25.
 (when *emacs25*
@@ -437,8 +480,9 @@
 (setq aspk-org-electric-insert-time-stamp-chars '(10))
 (defun aspk-org-electric-insert-time-stamp ()
   "Insert a time stamp when newline is pressed on a headline"
-  (when (and (save-excursion (forward-line -1) (outline-on-heading-p))
-             (memq last-command-event aspk-org-electric-insert-time-stamp-chars))
+  (when (and
+         (save-excursion (forward-line -1) (outline-on-heading-p))
+         (memq last-command-event aspk-org-electric-insert-time-stamp-chars))
     (indent-according-to-mode)
     (aspk-org-time-stamp)
     (org-return-indent)
@@ -461,5 +505,10 @@
 ;; disable undo-tree mode in org-mode
 ;; (add-to-list 'undo-tree-incompatible-major-modes 'org-mode)
 
+;; make org note's time stamp active by changing %t to %T
+(setcdr (assq 'note org-log-note-headings)
+        "Note token on %T")
+
+(require 'org-protocol)
 
 (provide 'init-org)

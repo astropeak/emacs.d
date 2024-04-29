@@ -1,4 +1,7 @@
 (1
-(ruby-mode . [(1 0) nil "" single])
-(cl-lib . [(0 5) nil "" single])
-)
+ (ruby-mode . [(1 0) nil "" single])
+ (cl-lib . [(0 5) nil "" single])
+ (emacsql-sqlite3 . [(1 0 2) nil "" single])
+ (emacsql . [(3 0 0) nil "" tar])
+ (org-roam . [(1 2 3) nil "" tar])
+ )

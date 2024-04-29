@@ -8,7 +8,14 @@
 
 ;;; Code:
 
-(quail-define-rules
+(setq wubi-rules nil)
+
+(defmacro wubi-quail-define-rules (&rest rules)
+  "Call quail-define-rules, and store rules to `wubi-rules'"
+  (setq wubi-rules rules)
+  `(quail-define-rules ,@rules))
+
+(wubi-quail-define-rules
 ("a" ["工" "戈"])
 ("aa" ["式"])
 ("aaa" ["工"])
@@ -43779,7 +43786,6 @@
 ("nhtp" ["收管"])
 ("nhtg" ["收生"])
 ("nhtm" ["蛋筒"])
-("nhty" [""])
 ("nhuw" ["收益"])
 ("nhud" ["眉头" "收养"])
 ("nhuj" ["收音"])
@@ -88966,6 +88972,7 @@
 ("yyyy" ["文言"])
 ("yyyf" ["譶"])
 )
+
 
 (defconst chinese-symbols
   "、 。 · ˉ ˇ ¨ 〃 々 — ～ ‖ … ‘ ’ “ ” 〔 〕 〈 〉 《 》

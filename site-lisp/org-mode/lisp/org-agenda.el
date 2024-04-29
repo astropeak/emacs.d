@@ -8663,13 +8663,24 @@ displayed Org file fills the frame."
 	   (buffer (marker-buffer marker))
 	   (pos (marker-position marker)))
       (unless buffer (user-error "Trying to switch to non-existent buffer"))
-      (pop-to-buffer-same-window buffer)
+      ;; (pop-to-buffer-same-window buffer)
+      ;; (switch-to-buffer buffer)
+      (switch-to-buffer-other-window buffer)
       (when delete-other-windows (delete-other-windows))
       (widen)
+      (message "buffer: %s, pos: %s" buffer pos)
       (goto-char pos)
+      ;; (with-current-buffer buffer
+      ;;   (goto-char pos)
+      ;;   )
+      ;; (goto-char 1)
+      (switch-to-buffer buffer)
+      (delete-other-windows)
       (when (derived-mode-p 'org-mode)
 	(org-show-context 'agenda)
-	(run-hooks 'org-agenda-after-show-hook)))))
+	(run-hooks 'org-agenda-after-show-hook))
+      )))
+
 
 (defun org-agenda-goto-mouse (ev)
   "Go to the Org file which contains the item at the mouse click."
@@ -8685,6 +8696,7 @@ if it was hidden in the outline."
   (let ((win (selected-window)))
     (org-agenda-goto t)
     (when full-entry (org-show-entry))
+    (recenter-top-bottom 'top)
     (select-window win)))
 
 (defvar org-agenda-show-window nil)

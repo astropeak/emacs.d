@@ -534,6 +534,7 @@ grab matched string, cssize them, and insert into kill ring"
 
 (defun my/paste-in-minibuffer ()
   (local-set-key (kbd "M-y") 'paste-from-x-clipboard)
+  ;; (local-set-key  (kbd "M-i")'toggle-input-method)
   )
 
 (add-hook 'minibuffer-setup-hook 'my/paste-in-minibuffer)
@@ -561,19 +562,17 @@ grab matched string, cssize them, and insert into kill ring"
 (require 'saveplace)
 (setq-default save-place t)
 
-;; {{expand-region.el
 ;; if emacs-nox, use C-@, else, use C-2;
-(if window-system
-    (progn
-      (define-key global-map (kbd "C-2") 'er/expand-region)
-      (define-key global-map (kbd "C-M-2") 'er/contract-region)
-      )
-  (progn
-    (define-key global-map (kbd "C-@") 'er/expand-region)
-    (define-key global-map (kbd "C-M-@") 'er/contract-region)
-    )
-  )
-;; }}
+;; (if window-system
+;;     (progn
+;;       (define-key global-map (kbd "C-2") 'er/expand-region)
+;;       (define-key global-map (kbd "C-M-2") 'er/contract-region)
+;;       )
+;;   (progn
+;;     (define-key global-map (kbd "C-@") 'er/expand-region)
+;;     (define-key global-map (kbd "C-M-@") 'er/contract-region)
+;;     )
+;;   )
 
 ;;iedit-mode
 (global-set-key (kbd "C-c ; i") 'iedit-mode-toggle-on-function)
@@ -1085,20 +1084,20 @@ The full path into relative path insert it as a local file link in org-mode"
 (if (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
 ;; TODO: modify below functions to define a function that switch to buffer by press b after SPACE-b
-(defun er/prepare-for-more-expansions-internal (repeat-key-str)
-  "Return bindings and a message to inform user about them"
-  (let ((msg (format "Type %s to expand again" repeat-key-str))
-        (bindings (list (cons repeat-key-str '(er/expand-region 1)))))
-    ;; If contract and expand are on the same binding, ignore contract
-    (unless (string-equal repeat-key-str expand-region-contract-fast-key)
-      (setq msg (concat msg (format ", %s to contract" expand-region-contract-fast-key)))
-      (push (cons expand-region-contract-fast-key '(er/contract-region 1)) bindings))
-    ;; If reset and either expand or contract are on the same binding, ignore reset
-    (unless (or (string-equal repeat-key-str expand-region-reset-fast-key)
-                (string-equal expand-region-contract-fast-key expand-region-reset-fast-key))
-      (setq msg (concat msg (format ", %s to reset" expand-region-reset-fast-key)))
-      (push (cons expand-region-reset-fast-key '(er/expand-region 0)) bindings))
-    (cons msg bindings)))
+;; (defun er/prepare-for-more-expansions-internal (repeat-key-str)
+;;   "Return bindings and a message to inform user about them"
+;;   (let ((msg (format "Type %s to expand again" repeat-key-str))
+;;         (bindings (list (cons repeat-key-str '(er/expand-region 1)))))
+;;     ;; If contract and expand are on the same binding, ignore contract
+;;     (unless (string-equal repeat-key-str expand-region-contract-fast-key)
+;;       (setq msg (concat msg (format ", %s to contract" expand-region-contract-fast-key)))
+;;       (push (cons expand-region-contract-fast-key '(er/contract-region 1)) bindings))
+;;     ;; If reset and either expand or contract are on the same binding, ignore reset
+;;     (unless (or (string-equal repeat-key-str expand-region-reset-fast-key)
+;;                 (string-equal expand-region-contract-fast-key expand-region-reset-fast-key))
+;;       (setq msg (concat msg (format ", %s to reset" expand-region-reset-fast-key)))
+;;       (push (cons expand-region-reset-fast-key '(er/expand-region 0)) bindings))
+;;     (cons msg bindings)))
 
 (defun aspk/bind-temporary-keymap (bindings &optional msg before after)
   "bind a temporary key map"
@@ -1292,9 +1291,14 @@ The full path into relative path insert it as a local file link in org-mode"
   (save-buffer)
   (shell-command (format "gcc %s && ./a.out" (buffer-file-name))))
 
+(defun config/smaller-font-size ()
+  (interactive)
+  (increment-default-font-height -10)
+  )
+
 (defun config/larger-font-size ()
   (interactive)
-  (increment-default-font-height 30)
+  (increment-default-font-height 10)
   )
 
 (defun aspk-remove-empty-blank-lines ()
@@ -1343,6 +1347,9 @@ The full path into relative path insert it as a local file link in org-mode"
   (interactive)
   (set-face-background 'default "ffffff"))
 
+;; set the default background color
+(aspk-set-background-color-old-lace)
+
 ;; save book automatically after storing one
 (add-to-list 'bmkp-after-set-hook 'bookmark-save)
 
@@ -1351,6 +1358,10 @@ The full path into relative path insert it as a local file link in org-mode"
 
 ;; disable c-x c-c, which is bined to save-buffers-kill-terminal. Which is now bind to evil-leader 'cq'
 (global-unset-key (kbd "C-x C-c"))
+
+(global-set-key (kbd "C-q") 'quoted-insert)
+
+(setq auto-save-interval 5) ;; value less than 5 is equivalent to 20.
 
 (defun aspk-ediff-current-buffers ()
   (interactive)

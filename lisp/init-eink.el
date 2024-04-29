@@ -17,8 +17,12 @@
 
 ;; Disable font lock mode totally, because in a eink display, not need to use different style
 ;; (setq font-lock-global-modes nil)
-;; (set-background-color "ffffff")
+(global-font-lock-mode -1)
+(set-face-background 'default "ffffff")
+;; (set-face-background 'default "black")
+;; (set-face-foreground 'default "black")
 
-
+(set-face-foreground 'org-scheduled-today "black")
+ ;; '(org-scheduled-today ((t (:foreground "black"))))
 
 (provide 'init-eink)

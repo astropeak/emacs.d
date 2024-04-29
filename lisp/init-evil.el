@@ -13,10 +13,10 @@
 ;; }}
 
 ;; {{ https://github.com/syl20bnr/evil-escape
-(require 'evil-escape)
-;; key-chord is used by evil-escape
-(setq key-chord-two-keys-delay 0.5)
-(evil-escape-mode 1)
+;; (require 'evil-escape)
+;; ;; key-chord is used by evil-escape
+;; (setq key-chord-two-keys-delay 0.5)
+;; (evil-escape-mode 1)
 ;; }}
 
 ;; Move back the cursor one position when exiting insert mode
@@ -103,8 +103,8 @@
 (global-evil-matchit-mode 1)
 ;; }}
 
-(eval-after-load "evil"
-  '(setq expand-region-contract-fast-key "z"))
+;; (eval-after-load "evil"
+;;   '(setq expand-region-contract-fast-key "z"))
 
 ;; @see http://stackoverflow.com/questions/10569165/how-to-map-jj-to-esc-in-emacs-evil-mode
 ;; @see http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
@@ -232,9 +232,9 @@ to replace the symbol under cursor"
   "srt" 'sr-speedbar-toggle
   "srr" 'sr-speedbar-refresh-toggle
   "ee" 'eval-expression
-  "cx" 'copy-to-x-clipboard
-  "cy" 'strip-convert-lines-into-one-big-string
-  "cff" 'current-font-face
+  ;; "cx" 'copy-to-x-clipboard
+  ;; "cy" 'strip-convert-lines-into-one-big-string
+  ;; "cff" 'current-font-face
   "fl" 'cp-filename-line-number-of-current-buffer
   "fn" 'cp-filename-of-current-buffer
   "fp" 'cp-fullpath-of-current-buffer
@@ -246,8 +246,8 @@ to replace the symbol under cursor"
   ;; "cl" 'evilnc-comment-or-uncomment-to-the-line
   ;; "cc" 'evilnc-copy-and-comment-lines
   ;; "cp" 'evilnc-comment-or-uncomment-paragraphs
-  "cd" 'evilcvn-change-symbol-in-defun
-  "cb" 'evilcvn-change-symbol-in-whole-buffer
+  ;; "cd" 'evilcvn-change-symbol-in-defun
+  ;; "cb" 'evilcvn-change-symbol-in-whole-buffer
   "tt" 'ido-goto-symbol ;; same as my vim hotkey
   "ht" 'helm-etags-select
   "hm" 'helm-bookmarks
@@ -382,7 +382,7 @@ to replace the symbol under cursor"
   "9" 'select-window-9
   "xm" 'smex
   "mx" 'helm-M-x
-  "xx" 'er/expand-region
+  ;; "xx" 'er/expand-region
   "xf" 'ido-find-file
   "xb" 'ido-switch-buffer
   "xc" 'save-buffers-kill-terminal
@@ -444,12 +444,14 @@ to replace the symbol under cursor"
   ;; "v" 'pcs-create-snippet
   "b" 'aspk/switch-buffer
   ";i" 'indent-buffer
-  "r" 'er/expand-region
+  ;; "r" 'er/expand-region
   "x" 'helm-M-x
   ;; "a" 'ace-jump-mode
   "z" 'aspk/move
   "w" 'eoh
-  "j" 'peak-org-capture-journal
+  "J" 'peak-org-capture-journal
+  "I" 'peak-org-capture-investment
+  "c" 'org-capture
   )
 
 ;; }}
@@ -469,7 +471,7 @@ to replace the symbol under cursor"
 ;; 但不知道重启emacs后,是否还能生效. => 仍然生效
 ;; ref: https://www.gnu.org/software/emacs/manual/html_node/emacs/Save-Keyboard-Macro.html#Save-Keyboard-Macro
 (fset 'aspk-ctrl-c-ctrl-c
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("" 0 "%d")) arg)))
+      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("" 0 "%d")) arg)))
 
 (evil-leader/set-key "f" 'aspk-toggle-evil-state) ;; this key bind is great, why I don't find this way before
 (evil-leader/set-key "hk" 'describe-key)
@@ -485,7 +487,7 @@ to replace the symbol under cursor"
 (evil-leader/set-key ";2" 'split-window-vertically)
 (evil-leader/set-key ";3" 'split-window-horizontally)
 (evil-leader/set-key ";c" 'aspk-ctrl-c-ctrl-c)
-(evil-leader/set-key "cq" 'save-buffers-kill-terminal) ;; exit emacs
+(evil-leader/set-key "Cq" 'save-buffers-kill-terminal) ;; exit emacs
 (evil-leader/set-key "nn" 'narrow-to-region)
 (evil-leader/set-key "ns" 'org-narrow-to-subtree)
 (evil-leader/set-key "nb" 'org-narrow-to-block)
@@ -497,25 +499,41 @@ to replace the symbol under cursor"
 ;; (define-key evil-insert-state-map (kbd "]]") 'aspk-show-hide-ansi-term)
 ;; (define-key evil-insert-state-map (kbd "]]") 'pns-expand-template-by-name)
 
-    ;; (define-key evil-emacs-state-map
-    ;;   (read-kbd-macro (concat evil-leader/non-normal-key
-    ;;           evil-leader/non-normal-key))
-    ;;   #'(lambda (N) (interactive "p") (self-insert-command N)))
+;; (define-key evil-emacs-state-map
+;;   (read-kbd-macro (concat evil-leader/non-normal-key
+;;           evil-leader/non-normal-key))
+;;   #'(lambda (N) (interactive "p") (self-insert-command N)))
 
 ;; change mode-line color by evil state
-(lexical-let ((default-color (cons (face-background 'mode-line)
-                                   (face-foreground 'mode-line))))
+(lexical-let (
+              (default-color (cons (face-background 'mode-line)
+                                   (face-foreground 'mode-line)))
+              ;; (default-color (cons "white" "black"))
+              (fg-color (if *is-eink* "red" "#ffffff"))
+              (bg-color-1 (if *is-eink* "black" "#e80000"))
+              (bg-color-2 (if *is-eink* "red" "#006fa0"))
+              )
   (defun aspk-set-mode-line-color ()
     "Change mode line color acording evil state and is buffer modified"
     (let ((color (cond ((minibufferp) default-color)
-                       ((evil-insert-state-p) '("#e80000" . "#ffffff"))
-                       ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
-                       ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
+                       ((evil-insert-state-p) (cons bg-color-1 "#ffffff"))
+                       ;; ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
+                       ((buffer-modified-p)   (cons bg-color-2 "#ffffff"))
                        (t default-color))))
       (set-face-background 'mode-line (car color))
       (set-face-foreground 'mode-line (cdr color)))))
 
+;; (unless *is-eink*
 (add-hook 'post-command-hook #'aspk-set-mode-line-color)
+;; )
+
+;; (set-face-background 'mode-line nil)
+;; (set-face-foreground 'mode-line nil)
+
+;; (set-face-attribute 'mode-line nil  :weight 'bold)
+;; (set-face-attribute 'mode-line nil  :foreground "red")
+;; (set-face-attribute 'mode-line nil  :background "")
+;; (set-face-attribute 'mode-line nil  :weight 'normal)
 
 ;; {{ evil-nerd-commenter
 ;; comment/uncomment lines
@@ -528,7 +546,7 @@ to replace the symbol under cursor"
 (add-hook 'evil-normal-state-entry-hook
           (lambda ()
             (when (buffer-file-name)
-                  (save-buffer))))
+              (save-buffer))))
 
 (defun aspk-evil-set-cursor-type-for-eink ()
   (interactive)

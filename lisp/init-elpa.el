@@ -85,7 +85,8 @@ ARCHIVE is the string name of the package archive.")
 ;; (setq package-archives '(("myelpa" . (format "%s/../myelpa" emacs-init-dir))))
 (setq package-archives (list (cons "myelpa" (format "%s/../myelpa" emacs-init-dir))))
 
-(if (not *emacs24*) (add-to-list 'package-archives (cons "localelpa" (format "%s/localelpa" emacs-init-dir))))
+;; (if (not *emacs24*) (add-to-list 'package-archives (cons "localelpa" (format "%s/localelpa" emacs-init-dir))))
+(add-to-list 'package-archives (cons "localelpa" (format "%s/localelpa" emacs-init-dir)))
 
 ;; Or Un-comment below line if you prefer installing package from https://github.com/redguardtoo/myelpa/ directly
 ;; (setq package-archives '(("myelpa" . "https://raw.github.com/redguardtoo/myelpa/master/")))
@@ -148,7 +149,9 @@ ARCHIVE is the string name of the package archive.")
     company-c-headers
     company-anaconda
     org-page
-    anaconda-mode)
+    anaconda-mode
+    ;;org-roam
+    )
   "Don't install any Melpa packages except these packages")
 
 ;; Don't take Melpa versions of certain packages
@@ -176,7 +179,7 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'color-theme)
 (require-package 'auto-compile)
 (require-package 'ace-jump-mode)
-(require-package 'expand-region '(0 8 0) nil)
+;; (require-package 'expand-region '(0 8 0) nil)
 (require-package 'fringe-helper)
 (require-package 'haskell-mode '(13 7 0) nil)
 (require-package 'magit '(1 2 0) nil)
@@ -273,12 +276,13 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'ag)
 (if *emacs24* (require-package 'git-gutter '(0 71) nil))
 (require-package 'fakir)
-(require-package 'f)
+(require-package 'f '(0 20 0) nil)
 (require-package 'elnode) ;; elnode dependent on f
 (when *emacs24*
   (require-package 'anaconda-mode)
   (require-package 'company-anaconda))
 (require-package 'quack) ;; for scheme
+;;(require-package 'org-roam)
 
 ;;(require-package 'showkey)
 
